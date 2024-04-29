@@ -10,19 +10,19 @@ import frsf.cidisi.faia.state.EnvironmentState;
 public class AmongEnvironmentState extends EnvironmentState {
 
 
-	public static final String ONE = "Reactor";
+	public static final String ONE = "Reactor ";
     public static final String TWO = "Upper Engine";
     public static final String THREE = "Lower Engine";
     public static final String FOUR = "Security";
-    public static final String FIVE = "Medbay";
+    public static final String FIVE = "Medbay ";
     public static final String SIX = "Electrical";
     public static final String SEVEN = "Cafeteria";
     public static final String EIGHT = "Storage";
     public static final String NINE = "Weapons";
-    public static final String TEN = "Admin";
+    public static final String TEN = "Admin   ";
     public static final String ELEVEN = "Communication";
     public static final String TWELVE = "Shields";
-    public static final String THIRTEEN = "02";
+    public static final String THIRTEEN = "02     ";
     public static final String FOURTEEN = "Navigation";
     
     
@@ -44,28 +44,32 @@ public class AmongEnvironmentState extends EnvironmentState {
     };
 
    
-    private Object[][] airship;									//LA NAVE CON LOS DATOS POR HABITACION
-    private HashMap<String, Collection<String>> movements;		//LOS MOVIMIENTOS POSIBLES DESDE CADA HABITACION
-    private String agentPosition;								//LA POSICION
-    private int agentEnergy;									//LA ENERGIA
+    private Object[][] airship;													//LA NAVE CON LOS DATOS POR HABITACION
+    private HashMap<String, Collection<String>> movements;						//LOS MOVIMIENTOS POSIBLES DESDE CADA HABITACION
+    private String agentPosition;												//LA POSICION
+    private int agentEnergy;													//LA ENERGIA
     private int totalCrewMembers;
     
 
 
     public AmongEnvironmentState() {
-        movements = new HashMap<String, Collection<String>>();
+        
         this.initState();
     }
 
     @Override
     public Object clone() {
-        return movements.clone();
+    	
+        return airship.clone();
+        
+        
     }
 
     @Override
     public void initState() {
-        
-    	//INICIALIZA LOS MOVIMIENTOS DEL AGENTE
+    	
+    	movements = new HashMap<String, Collection<String>>();
+    	
         for (int i = 0; i < POSITIONS.length; i++) {
             ArrayList<String> successors = new ArrayList<String>();
             for (int j = 1; j < POSITIONS[i].length; j++) {
@@ -86,11 +90,7 @@ public class AmongEnvironmentState extends EnvironmentState {
         return true;
     }
     
-	@Override
-	public String toString() {
-		
-		return "";
-	}
+	
 	
 	
 	
@@ -219,7 +219,7 @@ public class AmongEnvironmentState extends EnvironmentState {
     	        airship[9] = new Object[]{TEN, 1, 0};
     	        airship[10] = new Object[]{ELEVEN, 0, 0};
     	        airship[11] = new Object[]{TWELVE, 1, 0};
-    	        airship[12] = new Object[]{THIRTEEN, 0, };
+    	        airship[12] = new Object[]{THIRTEEN, 0, 1};
     	        airship[13] = new Object[]{FOURTEEN, 0, 0};
     			
     			/*
@@ -254,9 +254,12 @@ public class AmongEnvironmentState extends EnvironmentState {
     	}
     }
     
+    
     public Object[][] getAdjacency(String position) {
     	
     	Collection<String> rooms = movements.get(position);
+    	rooms.add(position);
+    	
     	Object[][] adjacentRooms = new Object[rooms.size()][3];
     	int n=0;
     	for (int i = 0; i<airship.length; i++)
@@ -271,5 +274,21 @@ public class AmongEnvironmentState extends EnvironmentState {
     
     }
     
+    @Override
+	public String toString() {
+		
+		StringBuffer str = new StringBuffer();
+		
+        str.append("\nTotal de tripulanes: " + totalCrewMembers + "\n");
+        for (int i=0; i<airship.length;i++)
+        {
+        	
+        	str.append("[" +  airship[i][0] + "\t");
+        	str.append(airship[i][1] + ",");
+        	str.append(airship[i][2] + "]\n");
+        }
+
+        return str.toString();
+	}
 
 }

@@ -37,6 +37,8 @@ public class goto10 extends SearchAction{
     @Override
     public EnvironmentState execute(AgentState ast, EnvironmentState est) {
     	
+    	/*
+    	
     	AmongEnvironmentState environmentState = (AmongEnvironmentState) est;
     	AmongAgentState amongState = ((AmongAgentState) ast);
     	
@@ -48,6 +50,17 @@ public class goto10 extends SearchAction{
     	environmentState.setAgentPosition(AmongAgentState.TEN);
 
         return environmentState;
+        */
+    	
+    	AmongEnvironmentState environmentState = (AmongEnvironmentState) est;
+ 
+    	environmentState.setAgentEnergy(environmentState.getAgentEnergy() - 1);
+    	environmentState.setAgentPosition(AmongAgentState.TEN);
+
+    	this.execute((SearchBasedAgentState) ast);
+    	
+    	return null;
+    	
     }
 
     @Override

@@ -9,16 +9,13 @@ import frsf.cidisi.faia.environment.Environment;
 
 public class AmongPerception extends Perception {
 
-    public static int UNKNOWN_PERCEPTION = -1;
-    public static int EMPTY_PERCEPTION = 0;
-    public static int ENEMY_PERCEPTION = 1;
-    public static int FOOD_PERCEPTION = 2;
-
+  
     private Object[][] adjacencySensor;
-    private int energy;
 
+    
+    
     public AmongPerception() {
-        energy = 50;
+        
     }
 
     public AmongPerception(Agent agent, Environment environment) {
@@ -31,10 +28,10 @@ public class AmongPerception extends Perception {
     @Override
     public void initPerception(Agent agent, Environment environment) {
         //AmongAgent amongAgent = (AmongAgent) agent;
+    	
         AmongEnvironment amongEnvironment = (AmongEnvironment) environment;
         AmongEnvironmentState environmentState = amongEnvironment.getEnvironmentState();
-
-
+        
         this.setAdjacencySensor(amongEnvironment.getAdjacency(environmentState.getAgentPosition()));
     
     }
@@ -49,22 +46,21 @@ public class AmongPerception extends Perception {
     }
 
 
-    public int getEnergy() {
-        return energy;
-    }
-
-    public void setEnergy(int energy) {
-        this.energy = energy;
-    }
 
     @Override
     public String toString() {
-        StringBuffer str = new StringBuffer();
+    	
+    	StringBuffer str = new StringBuffer();
 
-        str.append("Energy: " + this.energy);
-        str.append("; ");
-        str.append("Left Sensor: " + this.adjacencySensor.toString());
+        str.append("\n");
+        for (int i=0; i<this.adjacencySensor.length;i++)
+        {
+        	
+        	str.append("[" +  this.adjacencySensor[i][0] + "\t");
+        	str.append(this.adjacencySensor[i][1] + ",");
+        	str.append(this.adjacencySensor[i][2] + "]\n");
+        }
 
         return str.toString();
-    }
+	}
 }

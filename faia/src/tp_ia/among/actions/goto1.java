@@ -12,15 +12,13 @@ public class goto1 extends SearchAction{
     @Override
     public SearchBasedAgentState execute(SearchBasedAgentState s){
     	
-        AmongAgentState agentState = (AmongAgentState) s; // trata a s del tipo AmongAgentState
+        AmongAgentState agentState = (AmongAgentState) s;
         int energy = agentState.getEnergy();
-
-        ArrayList<String> possibleMovments = new ArrayList<String>(); // para ver a donde se puede mover
+        ArrayList<String> possibleMovments = new ArrayList<String>();
         possibleMovments.addAll(agentState.getPosibleMovements());
 
-
         if (possibleMovments != null && energy > 0) {
-            int index = possibleMovments.indexOf(AmongAgentState.ONE); // si ONE esta en la lista, establece la posicion del agente en ONE
+            int index = possibleMovments.indexOf(AmongAgentState.ONE); 
             if (index >= 0) {
                 agentState.setPosition(AmongAgentState.ONE);
                 agentState.setEnergy(energy-1);
@@ -29,7 +27,6 @@ public class goto1 extends SearchAction{
             }
 
         }
-
         return null;
     }
 
@@ -37,6 +34,7 @@ public class goto1 extends SearchAction{
     @Override
     public EnvironmentState execute(AgentState ast, EnvironmentState est) {
     	
+    	/*
     	AmongEnvironmentState environmentState = (AmongEnvironmentState) est;
     	AmongAgentState amongState = ((AmongAgentState) ast);
     	
@@ -48,6 +46,16 @@ public class goto1 extends SearchAction{
     	environmentState.setAgentPosition(AmongAgentState.ONE);
 
         return environmentState;
+        */
+    	
+    	AmongEnvironmentState environmentState = (AmongEnvironmentState) est;
+    	 
+    	environmentState.setAgentEnergy(environmentState.getAgentEnergy() - 1);
+    	environmentState.setAgentPosition(AmongAgentState.ONE);
+
+    	this.execute((SearchBasedAgentState) ast);
+    	
+    	return null;
     }
 
     @Override

@@ -10,43 +10,45 @@ import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
 public class AmongAgentState extends SearchBasedAgentState {
 	
 	
-	public static final String ONE = "Reactor";
+	public static final String ONE = "Reactor ";
     public static final String TWO = "Upper Engine";
     public static final String THREE = "Lower Engine";
     public static final String FOUR = "Security";
-    public static final String FIVE = "Medbay";
+    public static final String FIVE = "Medbay ";
     public static final String SIX = "Electrical";
     public static final String SEVEN = "Cafeteria";
     public static final String EIGHT = "Storage";
     public static final String NINE = "Weapons";
-    public static final String TEN = "Admin";
+    public static final String TEN = "Admin   ";
     public static final String ELEVEN = "Communication";
     public static final String TWELVE = "Shields";
-    public static final String THIRTEEN = "02";
+    public static final String THIRTEEN = "02     ";
     public static final String FOURTEEN = "Navigation";
 	
 	private Object[][] airship;
 	String position;
 	private int energy;
-	
+	private int remainingCrewMembers;
+	private int remainingTasks;
 	private HashMap<String, Collection<String>> movements;
 	
 	
-	public AmongAgentState(Object[][] m, String start_position, int start_energy,  HashMap<String, Collection<String>> mov) {
+	public AmongAgentState(Object[][] m, String start_position, int start_energy,  HashMap<String, Collection<String>> mov, int crewMembers, int tasks) {
         airship = m;
         position = start_position;
         energy = start_energy;
         movements = mov;
+        remainingCrewMembers = crewMembers;
+        remainingTasks = tasks;
     }
     
 
 	
     public AmongAgentState() {
         airship = new Object[14][3];
-        position = ONE;
-        energy = 7;
         this.initState();
     }
+    
     
     
     @Override
@@ -77,7 +79,7 @@ public class AmongAgentState extends SearchBasedAgentState {
         //String newPosition = position;
         //Integer newEnergy = energy;
 
-        AmongAgentState newState = new AmongAgentState(newAirship, this.getPosition(), this.energy, this.movements);
+        AmongAgentState newState = new AmongAgentState(newAirship, this.getPosition(), this.energy, this.movements, this.remainingCrewMembers, this.remainingTasks);
 
         return newState;
     }
@@ -117,6 +119,8 @@ public class AmongAgentState extends SearchBasedAgentState {
         this.setFirtsValues();
         this.setPosition(ONE);
         this.setEnergy(50);
+        this.setRemainingCrewMembers(7);
+        this.setRemainingTasks(3);
         
         
     }
@@ -129,23 +133,20 @@ public class AmongAgentState extends SearchBasedAgentState {
     	Object[][] aux = amongPerception.getAdjacencySensor();
     	
     	for (Object[] adjacencyRoom : aux) {
+    		
     		for (int i=0; i<airship.length; i++){
+    			
+    			
     			if (airship[i][0] == adjacencyRoom[0]) {
     				airship[i] = adjacencyRoom;
     			}
     		}
     		
     	}
-    	energy = amongPerception.getEnergy();
+    	energy = this.getEnergy();
+    	remainingTasks = this.getRemainingTasks();
+    	remainingCrewMembers = this.getRemainingCrewMembers();
     
-    }
-    
-    @Override
-    public String toString() {
-    	
-        String str = "Posicion: " + position;
-        return str;
-
     }
     
     @Override
@@ -200,6 +201,22 @@ public class AmongAgentState extends SearchBasedAgentState {
     public void setEnergy(int energy) {
         this.energy = energy;
     }
+    
+    public int getRemainingCrewMembers() {
+        return remainingCrewMembers;
+    }
+
+    public void setRemainingCrewMembers(int crewMembers) {
+        this.remainingCrewMembers = crewMembers;
+    }
+
+    public int getRemainingTasks() {
+        return remainingTasks;
+    }
+
+    public void setRemainingTasks(int tasks) {
+        this.remainingTasks = tasks;
+    }
 
     
     public void setFirtsValues()
@@ -219,20 +236,21 @@ public class AmongAgentState extends SearchBasedAgentState {
     	airship[12][0] = THIRTEEN;
     	airship[13][0] = FOURTEEN;
     	
-    	airship[0][1] = 1;
-    	airship[0][2] = 1;
+   
+    	
     }
+    
     
     public void setRoomValues(String position, Object[] room) {
     	
     	for (int i = 0; i < airship.length; i++) {
             if (airship[i].length > 0 && airship[i][0].equals(position)) {
                 airship[i] = room;
-                return;
+             
             }
         }
     }
-
+    
     public Collection<String> getPosibleMovements() {
     	
         return movements.get(position);
@@ -242,39 +260,61 @@ public class AmongAgentState extends SearchBasedAgentState {
         return this.getEnergy() > 0;
     }
 
+    public Boolean isNoMoreCrewMembers() {
+    	return remainingCrewMembers == 0;
+    }
+    
+    public Boolean allSabotagedTasks() {
+    	return remainingTasks == 0;
+    }
+    
+    @Override
+    public String toString() {
+    	
+    	StringBuffer str = new StringBuffer();
+        str.append("\n--Posicion: " + position + " \n");
+        str.append("--Tareas Restantes: " + remainingTasks + " \n");
+        str.append("--Tipulantes Restantes: "+remainingCrewMembers+"\n");
+        str.append("--Energia: " + energy + " \n");
+        str.append("--Conocimiento del Mapa:\n");
+        for (int i=0; i<this.airship.length;i++)
+        {
+        	str.append("[" +  airship[i][0] + "\t");
+        	
+        	if (airship[i][1] == null)
+        		str.append("-,");
+        	else
+        		str.append(airship[i][1] + ",");
+        	
+        	if (airship[i][2] == null)
+        		str.append("-]\n");
+        	else
+        		str.append(airship[i][2] + "]\n");
+        }
+        return str.toString();
+    }
+    
+    
+    /*
     public Boolean isNoMoreCrewmates() {
         
     	for(int i = 0; i < airship.length; i++)
     	{
-    		if (airship[i][2] != null)
-    		{
-    			if ((int)airship[i][1] != 0)
-    			{
-    				return false;
-    			}
-    		}
-    		
-    		else return false;
+    		if (airship[i][2] == null || (int)airship[i][1] != 0)
+    			return false;
     	}
-    	return true;
-    	
+    	return true;   	
     }
     
     public Boolean allSabotagedTasks() {
     	
     	for(int i = 0; i < airship.length; i++)
     	{
-    		if (airship[i][2] != null)
-    		{
-    			if ((int)airship[i][2] == 1)
-    			{
-    				return false;
-    			}
-    		}
-    		else return false;
+    		if (airship[i][2] == null || (int)airship[i][2] == 1)
+    			return false;
     	}
     	return true;
     }
-
+*/
 
 }

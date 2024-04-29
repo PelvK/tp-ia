@@ -1,6 +1,7 @@
 package tp_ia.among;
 
 
+import frsf.cidisi.faia.agent.Action;
 import frsf.cidisi.faia.agent.Perception;
 import frsf.cidisi.faia.environment.Environment;
 
@@ -33,10 +34,11 @@ public class AmongEnvironment extends Environment {
     
     
     
+    
     public Object[][] getAdjacency(String position) {
     	
     	return ((AmongEnvironmentState) this.environmentState).getAdjacency(position);
     }
     
-    
+   
 }
