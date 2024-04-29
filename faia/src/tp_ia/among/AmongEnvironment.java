@@ -11,13 +11,32 @@ public class AmongEnvironment extends Environment {
         this.environmentState = new AmongEnvironmentState();
     }
 
+    public AmongEnvironmentState getEnvironmentState() {
+    	return (AmongEnvironmentState) super.getEnvironmentState();
+    }
+    
+    
     @Override
     public Perception getPercept() {
-        return null;
+        
+    	AmongPerception perception = new AmongPerception();
+    	
+    	perception.setAdjacencySensor(this.getAdjacency(this.getEnvironmentState().getAgentPosition()));
+    	
+    	return perception;
     }
 
     @Override
     public String toString() {
-        return "";
+    	 return environmentState.toString();
     }
+    
+    
+    
+    public Object[][] getAdjacency(String position) {
+    	
+    	return ((AmongEnvironmentState) this.environmentState).getAdjacency(position);
+    }
+    
+    
 }

@@ -8,12 +8,13 @@ public class AmongGoal extends GoalTest {
 
 	@Override
 	public boolean isGoalState(AgentState agentState) {
-		/*if (agentState.isNoMoreCrewmates() && 
-				agentState.isNotMoreSabotagedTask &&
-					agentState.isAlive()) {
+		
+		if (((AmongAgentState)agentState).isNoMoreCrewmates() && 
+				((AmongAgentState)agentState).allSabotagedTasks() &&
+					((AmongAgentState)agentState).isAlive()) {
 			return true;
 		}
-		*/
+		
 		return false;
 	}
 }
