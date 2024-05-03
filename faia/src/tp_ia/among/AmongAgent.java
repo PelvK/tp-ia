@@ -23,6 +23,8 @@ public class AmongAgent extends SearchBasedAgent {
 		
 		Vector<SearchAction> operators = new Vector<SearchAction>();
 		
+		operators.addElement(new kill());
+		operators.addElement(new sabotage());
 		operators.addElement(new goto1());
 		operators.addElement(new goto2());
 		operators.addElement(new goto3());
@@ -37,8 +39,7 @@ public class AmongAgent extends SearchBasedAgent {
 		operators.addElement(new goto12());
 		operators.addElement(new goto13());
 		operators.addElement(new goto14());
-		operators.addElement(new kill());
-		operators.addElement(new sabotage());
+		
 		
 		Problem problem = new Problem(goal, amongState, operators);
 		this.setProblem(problem);

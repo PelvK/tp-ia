@@ -1,5 +1,9 @@
 package tp_ia.among;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import frsf.cidisi.faia.agent.Agent;
 import frsf.cidisi.faia.agent.Perception;
 import frsf.cidisi.faia.environment.Environment;
@@ -10,7 +14,7 @@ import frsf.cidisi.faia.environment.Environment;
 public class AmongPerception extends Perception {
 
   
-    private Object[][] adjacencySensor;
+    private HashMap<String, Collection<Integer>> adjacencySensor;
 
     
     
@@ -37,11 +41,11 @@ public class AmongPerception extends Perception {
     }
 
 
-    public Object[][] getAdjacencySensor() {
+    public HashMap<String, Collection<Integer>> getAdjacencySensor() {
         return adjacencySensor;
     }
 
-    public void setAdjacencySensor(Object[][] adjacencySensor) {
+    public void setAdjacencySensor(HashMap<String, Collection<Integer>> adjacencySensor) {
         this.adjacencySensor = adjacencySensor;
     }
 
@@ -53,14 +57,31 @@ public class AmongPerception extends Perception {
     	StringBuffer str = new StringBuffer();
 
         str.append("\n");
-        for (int i=0; i<this.adjacencySensor.length;i++)
-        {
+        
+        
+	for (Entry<String, Collection<Integer>> entry : adjacencySensor.entrySet()) {
+    		
+    	    String key = entry.getKey();
+    	    Collection<Integer> value = adjacencySensor.get(key);
+    	    str.append("[" +  key + "\t");
         	
-        	str.append("[" +  this.adjacencySensor[i][0] + "\t");
-        	str.append(this.adjacencySensor[i][1] + ",");
-        	str.append(this.adjacencySensor[i][2] + "]\n");
+    	    if (value != null)
+    	    {
+    	    	if (value.toArray()[0] == null)
+            		str.append("-,");
+            	else
+            		str.append(value.toArray()[0] + ",");
+            	
+            	if (value.toArray()[1] == null)
+            		str.append("-]\n");
+            	else
+            		str.append(value.toArray()[1] + "]\n");
+    	    }
+        	
         }
-
+    	
+    
         return str.toString();
+        
 	}
 }

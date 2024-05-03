@@ -1,9 +1,10 @@
 package tp_ia.among;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map.Entry;
 
 import frsf.cidisi.faia.state.EnvironmentState;
 
@@ -44,7 +45,7 @@ public class AmongEnvironmentState extends EnvironmentState {
     };
 
    
-    private Object[][] airship;													//LA NAVE CON LOS DATOS POR HABITACION
+    private HashMap<String, Collection<Integer>> airship;													//LA NAVE CON LOS DATOS POR HABITACION
     private HashMap<String, Collection<String>> movements;						//LOS MOVIMIENTOS POSIBLES DESDE CADA HABITACION
     private String agentPosition;												//LA POSICION
     private int agentEnergy;													//LA ENERGIA
@@ -94,7 +95,7 @@ public class AmongEnvironmentState extends EnvironmentState {
 	
 	
 	
-	public Object[][]  getAirship() {
+	public HashMap<String, Collection<Integer>>  getAirship() {
         return airship;
     }
 
@@ -114,15 +115,16 @@ public class AmongEnvironmentState extends EnvironmentState {
     public int getTotalTasks() {
     	int n = 0;
    
-    	for (Object[] fila : airship) {
-            n += (int)fila[2];
-        }
+    	for (Entry<String, Collection<Integer>> room : airship.entrySet())
+    	{
+    		n += (int)room.getValue().toArray()[1];
+    	}
     	return n;
     }
     
   
     
-    public void setAirship(Object[][] airship) {
+    public void setAirship(HashMap<String, Collection<Integer>>  airship) {
         this.airship = airship;
     }
     
@@ -139,113 +141,48 @@ public class AmongEnvironmentState extends EnvironmentState {
     }
 
    
-    public void setRoomValues(String position, Object[] room) {
-    	
-    	for (int i = 0; i < airship.length; i++) {
-            if (airship[i].length > 0 && airship[i][0].equals(position)) {
-                airship[i] = room;
-                return;
-            }
-        }
+    public void setRoomValues(String position, Collection<Integer> room) {
+    		
+    	airship.put(position, room);
     }
     
-    public Object[] getAirshipRoomValues(String room) {
+    public Collection<Integer> getAirshipRoomValues(String room) {
     	
-   	 for (Object[] row : airship) {
-   		 if (row[0].toString().equals(room)) {
-   	            return row;
-   	        }
-   		 
-   	 }
-       return null;
+    	return airship.get(room);
+   
    }
     
-    /*
-    public void setWorld(int row, int col, int value) {
-        this.world[row][col] = value;
-    }
-    
-    public int getTopCell(int row, int col) {
-        if (row == 0) {
-            return world[3][col];
-        }
-        return world[row - 1][col];
-    }
-    
-    public int getLeftCell(int row, int col) {
-        if (col == 0) {
-            return world[row][3];
-        }
-        return world[row][col - 1];
-    }
-
-    public int getRightCell(int row, int col) {
-        if (col == 3) {
-            return world[row][0];
-        }
-        return world[row][col + 1];
-    }
-
-    public int getBottomCell(int row, int col) {
-        if (row == 3) {
-            return world[0][col];
-        }
-        return world[row + 1][col];
-    }
-    */
-
-
-    
-    
-    
-    //PARA CONFIGURAR DIFERENTES ESCENARIOS
+  
     private void initAirship(int id)
     {
     	switch(id)
     	{
     		case 1:
     			
-    			airship = new Object[14][3];
+    			airship = new HashMap<String, Collection<Integer>>();
     			
-    			airship[0] = new Object[]{ONE, 1, 1};
-    	        airship[1] = new Object[]{TWO, 0, 0};
-    	        airship[2] = new Object[]{THREE, 1, 1};
-    	        airship[3] = new Object[]{FOUR, 2, 0};
-    	        airship[4] = new Object[]{FIVE, 0, 0};
-    	        airship[5] = new Object[]{SIX, 0, 0};
-    	        airship[6] = new Object[]{SEVEN, 1, 0};
-    	        airship[7] = new Object[]{EIGHT, 0, 0};
-    	        airship[8] = new Object[]{NINE, 0, 0};
-    	        airship[9] = new Object[]{TEN, 1, 0};
-    	        airship[10] = new Object[]{ELEVEN, 0, 0};
-    	        airship[11] = new Object[]{TWELVE, 1, 0};
-    	        airship[12] = new Object[]{THIRTEEN, 0, 1};
-    	        airship[13] = new Object[]{FOURTEEN, 0, 0};
-    			
-    			/*
-    			airship.put("ONE", Arrays.asList(1, 1));      
-    	        airship.put("TWO", Arrays.asList(0, 0));       
-    	        airship.put("THREE", Arrays.asList(1, 1));     
-    	        airship.put("FOUR", Arrays.asList(2, 0));      
-    	        airship.put("FIVE", Arrays.asList(0, 0));      
-    	        airship.put("SIX", Arrays.asList(0, 0));       
-    	        airship.put("SEVEN", Arrays.asList(1, 0));     
-    	        airship.put("EIGHT", Arrays.asList(0, 0));     
-    	        airship.put("NINE", Arrays.asList(0, 0));     
-    	        airship.put("TEN", Arrays.asList(1, 0));       
-    	        airship.put("ELEVEN", Arrays.asList(0, 0));    
-    	        airship.put("TWELVE", Arrays.asList(1, 0));   
-    	        airship.put("THIRTEEN", Arrays.asList(0, 0));  
-    	        airship.put("FOURTEEN", Arrays.asList(0, 1));
-    	        
-    	        */
+    			airship.put(ONE, Arrays.asList(1, 1));
+    			airship.put(TWO, Arrays.asList(0, 0));
+    			airship.put(THREE, Arrays.asList(1, 1));
+    			airship.put(FOUR, Arrays.asList(2, 0));
+    			airship.put(FIVE, Arrays.asList(0, 0));
+    			airship.put(SIX, Arrays.asList(0, 0));
+    			airship.put(SEVEN, Arrays.asList(1, 0));
+    			airship.put(EIGHT, Arrays.asList(0, 0));
+    			airship.put(NINE, Arrays.asList(0, 0));
+    			airship.put(TEN, Arrays.asList(1, 0));
+    			airship.put(ELEVEN, Arrays.asList(0, 0));
+    			airship.put(TWELVE, Arrays.asList(1, 0));
+    			airship.put(THIRTEEN, Arrays.asList(0, 1));
+    			airship.put(FOURTEEN, Arrays.asList(0, 0));
     	        
     	
     	        int members = 0;
     	        
-    	        for (Object[] fila : airship) {
-    	            members += (int)fila[1];
-    	        }
+    	        for (Entry<String, Collection<Integer>> room : airship.entrySet())
+    	    	{
+    	    		members += (int)room.getValue().toArray()[0];
+    	    	}
     	        
     	        this.setTotalCrewMembers(members);
     			
@@ -255,21 +192,20 @@ public class AmongEnvironmentState extends EnvironmentState {
     }
     
     
-    public Object[][] getAdjacency(String position) {
+    public HashMap<String, Collection<Integer>> getAdjacency(String position) {
     	
     	Collection<String> rooms = movements.get(position);
     	rooms.add(position);
     	
-    	Object[][] adjacentRooms = new Object[rooms.size()][3];
-    	int n=0;
-    	for (int i = 0; i<airship.length; i++)
+    	HashMap<String, Collection<Integer>> adjacentRooms = new HashMap<String, Collection<Integer>>();
+
+    	
+    	for(String room : rooms)
     	{
-    		if (rooms.contains((String)airship[i][0]))
-    		{
-    			adjacentRooms[n] = airship[i];
-    			n++;
-    		}
+    		Collection<Integer> aux = airship.get(room);
+    		adjacentRooms.put(room, aux);
     	}
+    	
     	return adjacentRooms;
     
     }
@@ -280,14 +216,28 @@ public class AmongEnvironmentState extends EnvironmentState {
 		StringBuffer str = new StringBuffer();
 		
         str.append("\nTotal de tripulanes: " + totalCrewMembers + "\n");
-        for (int i=0; i<airship.length;i++)
-        {
+        
+        	for (Entry<String, Collection<Integer>> entry : airship.entrySet()) {
+    		
+    	    String key = entry.getKey();
+    	    Collection<Integer> value = airship.get(key);
+    	    str.append("[" +  key + "\t");
         	
-        	str.append("[" +  airship[i][0] + "\t");
-        	str.append(airship[i][1] + ",");
-        	str.append(airship[i][2] + "]\n");
+    	    if (value != null)
+    	    {
+    	    	if (value.toArray()[0] == null)
+            		str.append("-,");
+            	else
+            		str.append(value.toArray()[0] + ",");
+            	
+            	if (value.toArray()[1] == null)
+            		str.append("-]\n");
+            	else
+            		str.append(value.toArray()[1] + "]\n");
+    	    }
+        	
         }
-
+    	
         return str.toString();
 	}
 

@@ -1,5 +1,7 @@
 package tp_ia.among.actions;
 
+import java.util.Collection;
+
 import frsf.cidisi.faia.agent.search.SearchAction;
 import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
 import frsf.cidisi.faia.state.AgentState;
@@ -13,14 +15,14 @@ public class kill extends SearchAction {
         AmongAgentState amongState = (AmongAgentState) s;
 
         String position = amongState.getPosition();
-        Object[] room = amongState.getAirshipRoomValues(position);
+        Collection<Integer> room = amongState.getAirshipRoomValues(position);
         
-        if (room[1] == null) return null;
+        if (room == null) return null;
         
-        if ((int)room[1] > 0 && (amongState.getEnergy() > 0)) {
+        if ((int)room.toArray()[0] > 0 && (amongState.getEnergy() > 0)) {
             
         	amongState.setEnergy(amongState.getEnergy() - 1);
-        	room[1] = (int)room[1] - 1;
+        	room.toArray()[0] = (int)room.toArray()[0] - 1;
         	amongState.setRoomValues(position, room);
         	amongState.setRemainingCrewMembers(amongState.getRemainingCrewMembers() - 1);
             return amongState;
@@ -35,11 +37,11 @@ public class kill extends SearchAction {
         AmongEnvironmentState airshipState = (AmongEnvironmentState) est;
         AmongAgentState amongState = ((AmongAgentState) ast);
         String position = airshipState.getAgentPosition();
-        Object[] room = airshipState.getAirshipRoomValues(position);
+        Collection<Integer> room = airshipState.getAirshipRoomValues(position);
         
-        if ((int)room[1] > 0 && airshipState.getAgentEnergy() > 0) {
+        if ((int)room.toArray()[0] > 0 && airshipState.getAgentEnergy() > 0) {
         	
-        	room[1] = (int)room[1] - 1;
+        	room.toArray()[0] = (int)room.toArray()[0] - 1;
         	
         	airshipState.setRoomValues(position, room);
         	airshipState.setAgentEnergy(airshipState.getAgentEnergy() - 1);

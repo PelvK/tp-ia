@@ -1,6 +1,7 @@
 package tp_ia.among.actions;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import frsf.cidisi.faia.agent.search.SearchAction;
 import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
@@ -15,7 +16,10 @@ public class goto1 extends SearchAction{
         AmongAgentState agentState = (AmongAgentState) s;
         int energy = agentState.getEnergy();
         ArrayList<String> possibleMovments = new ArrayList<String>();
-        possibleMovments.addAll(agentState.getPosibleMovements());
+        
+        Collection<String> aux = agentState.getPosibleMovements();
+        
+        possibleMovments.addAll(aux);
 
         if (possibleMovments != null && energy > 0) {
             int index = possibleMovments.indexOf(AmongAgentState.ONE); 
@@ -33,20 +37,7 @@ public class goto1 extends SearchAction{
    
     @Override
     public EnvironmentState execute(AgentState ast, EnvironmentState est) {
-    	
-    	/*
-    	AmongEnvironmentState environmentState = (AmongEnvironmentState) est;
-    	AmongAgentState amongState = ((AmongAgentState) ast);
-    	
-    	amongState.setPosition(AmongAgentState.ONE);
-    	amongState.setEnergy(amongState.getEnergy() - 1);
-    	
-    	
-    	environmentState.setAgentEnergy(environmentState.getAgentEnergy() - 1);
-    	environmentState.setAgentPosition(AmongAgentState.ONE);
-
-        return environmentState;
-        */
+    
     	
     	AmongEnvironmentState environmentState = (AmongEnvironmentState) est;
     	 

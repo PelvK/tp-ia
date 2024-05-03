@@ -36,20 +36,7 @@ public class goto4 extends SearchAction{
    
     @Override
     public EnvironmentState execute(AgentState ast, EnvironmentState est) {
-    	
-    	/*
-    	AmongEnvironmentState environmentState = (AmongEnvironmentState) est;
-    	AmongAgentState amongState = ((AmongAgentState) ast);
-    	
-    	amongState.setPosition(AmongAgentState.FOUR);
-    	amongState.setEnergy(amongState.getEnergy() - 1);
-    	
-    	
-    	environmentState.setAgentEnergy(environmentState.getAgentEnergy() - 1);
-    	environmentState.setAgentPosition(AmongAgentState.FOUR);
-
-        return environmentState;
-        */
+    
     	
     	AmongEnvironmentState environmentState = (AmongEnvironmentState) est;
     	 
