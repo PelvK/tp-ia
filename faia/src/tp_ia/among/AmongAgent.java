@@ -10,7 +10,6 @@ import frsf.cidisi.faia.agent.search.Problem;
 import frsf.cidisi.faia.agent.search.SearchAction;
 import frsf.cidisi.faia.agent.search.SearchBasedAgent;
 import frsf.cidisi.faia.solver.search.BreathFirstSearch;
-import frsf.cidisi.faia.solver.search.DepthFirstSearch;
 import frsf.cidisi.faia.solver.search.Search;
 import tp_ia.among.actions.*;
 
@@ -21,6 +20,7 @@ public class AmongAgent extends SearchBasedAgent {
 		AmongGoal goal = new AmongGoal();
 		AmongAgentState amongState = new AmongAgentState();
 		this.setAgentState(amongState);
+		
 		Vector<SearchAction> operators = new Vector<SearchAction>();
 		operators.addElement(new kill());
 		operators.addElement(new sabotage());
@@ -28,16 +28,16 @@ public class AmongAgent extends SearchBasedAgent {
 		operators.addElement(new goto2());
 		operators.addElement(new goto3());
 		operators.addElement(new goto4());
-		//operators.addElement(new goto5());
-		//operators.addElement(new goto6());
-		//operators.addElement(new goto7());
-		//operators.addElement(new goto8());
-		//operators.addElement(new goto9());
-		//operators.addElement(new goto10());
-		//operators.addElement(new goto11());
-		//operators.addElement(new goto12());
-		//operators.addElement(new goto13());
-		//operators.addElement(new goto14());
+		operators.addElement(new goto5());
+		operators.addElement(new goto6());
+		operators.addElement(new goto7());
+		operators.addElement(new goto8());
+		operators.addElement(new goto9());
+		operators.addElement(new goto10());
+		operators.addElement(new goto11());
+		operators.addElement(new goto12());
+		operators.addElement(new goto13());
+		operators.addElement(new goto14());
 		
 		
 		Problem problem = new Problem(goal, amongState, operators);
@@ -55,7 +55,7 @@ public class AmongAgent extends SearchBasedAgent {
 
 		Action selectedAction = null;
 		try{
-			selectedAction= this.getSolver().solve(new Object[]{this.getProblem()}); //devuelve el problema que el agente debe resolver
+ 			selectedAction= this.getSolver().solve(new Object[]{this.getProblem()}); //devuelve el problema que el agente debe resolver
 		} catch (Exception ex){
 			Logger.getLogger(AmongAgent.class.getName()).log(Level.SEVERE, null, ex);
 		}

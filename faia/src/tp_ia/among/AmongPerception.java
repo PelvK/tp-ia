@@ -1,7 +1,7 @@
 package tp_ia.among;
 
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import frsf.cidisi.faia.agent.Agent;
@@ -14,7 +14,7 @@ import frsf.cidisi.faia.environment.Environment;
 public class AmongPerception extends Perception {
 
   
-    private HashMap<String, Collection<Integer>> adjacencySensor;
+    private HashMap<String, List<Integer>> adjacencySensor;
 
     
     
@@ -41,11 +41,11 @@ public class AmongPerception extends Perception {
     }
 
 
-    public HashMap<String, Collection<Integer>> getAdjacencySensor() {
+    public HashMap<String, List<Integer>> getAdjacencySensor() {
         return adjacencySensor;
     }
 
-    public void setAdjacencySensor(HashMap<String, Collection<Integer>> adjacencySensor) {
+    public void setAdjacencySensor(HashMap<String, List<Integer>> adjacencySensor) {
         this.adjacencySensor = adjacencySensor;
     }
 
@@ -56,26 +56,26 @@ public class AmongPerception extends Perception {
     	
     	StringBuffer str = new StringBuffer();
 
-        str.append("\n");
+        str.append("\n=====================\n");
         
         
-	for (Entry<String, Collection<Integer>> entry : adjacencySensor.entrySet()) {
+	for (Entry<String, List<Integer>> entry : adjacencySensor.entrySet()) {
     		
     	    String key = entry.getKey();
-    	    Collection<Integer> value = adjacencySensor.get(key);
+    	    List<Integer> value = adjacencySensor.get(key);
     	    str.append("[" +  key + "\t");
         	
     	    if (value != null)
     	    {
-    	    	if (value.toArray()[0] == null)
+    	    	if (value.get(0) == null)
             		str.append("-,");
             	else
-            		str.append(value.toArray()[0] + ",");
+            		str.append(value.get(0) + ",");
             	
-            	if (value.toArray()[1] == null)
+            	if (value.get(1) == null)
             		str.append("-]\n");
             	else
-            		str.append(value.toArray()[1] + "]\n");
+            		str.append(value.get(1) + "]\n");
     	    }
         	
         }

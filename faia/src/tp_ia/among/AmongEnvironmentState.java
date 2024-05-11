@@ -1,55 +1,32 @@
 package tp_ia.among;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
-
 import frsf.cidisi.faia.state.EnvironmentState;
 
 public class AmongEnvironmentState extends EnvironmentState {
 
-
-	public static final String ONE = "Reactor ";
-    public static final String TWO = "Upper Engine";
-    public static final String THREE = "Lower Engine";
-    public static final String FOUR = "Security";
-    public static final String FIVE = "Medbay ";
-    public static final String SIX = "Electrical";
-    public static final String SEVEN = "Cafeteria";
-    public static final String EIGHT = "Storage";
-    public static final String NINE = "Weapons";
-    public static final String TEN = "Admin   ";
-    public static final String ELEVEN = "Communication";
-    public static final String TWELVE = "Shields";
-    public static final String THIRTEEN = "02     ";
-    public static final String FOURTEEN = "Navigation";
-    
-    
-    public static final String[][] POSITIONS = new String[][]{
-    	{ONE, TWO,THREE, FOUR},
-        {TWO, ONE, THREE, FOUR, FIVE, SEVEN},
-        {THREE, ONE, TWO, FOUR, SIX, EIGHT},
-        {FOUR, TWO, THREE},
-        {FIVE, TWO, SEVEN},
-        {SIX, THREE, EIGHT},
-        {SEVEN, TWO, NINE, FIVE},
-        {EIGHT, TEN, SIX, THREE, ELEVEN, TWELVE},
-        {NINE, SEVEN, THIRTEEN, FOURTEEN, ELEVEN},
-        {TEN, SEVEN, EIGHT},
-        {ELEVEN, EIGHT, TWELVE},
-        {TWELVE, THIRTEEN, NINE, FOURTEEN},
-        {THIRTEEN, NINE, TWELVE, FOURTEEN},
-        {FOURTEEN, NINE, THIRTEEN, TWELVE}
-    };
-
-    
+	public static final String ONE = "Reactor(1)-----------";
+    public static final String TWO = "Upper Engine(2)------";
+    public static final String THREE = "Lower Engine(3)----";
+    public static final String FOUR = "Security(4)---------";
+    public static final String FIVE = "Medbay(5)-----------";
+    public static final String SIX = "Electrical(6)--------";
+    public static final String SEVEN = "Cafeteria(7)-------";
+    public static final String EIGHT = "Storage(8)---------";
+    public static final String NINE = "Weapons(9)----------";
+    public static final String TEN = "Admin(10)------------";
+    public static final String ELEVEN = "Communication(11)-";
+    public static final String TWELVE = "Shields(12)-------";
+    public static final String THIRTEEN = "02(13)----------";
+    public static final String FOURTEEN = "Navigation(14)--";
    
-    private HashMap<String, Collection<Integer>> airship;													//LA NAVE CON LOS DATOS POR HABITACION
-    private HashMap<String, Collection<String>> movements;						//LOS MOVIMIENTOS POSIBLES DESDE CADA HABITACION
-    private String agentPosition;												//LA POSICION
-    private int agentEnergy;													//LA ENERGIA
+    private HashMap<String, List<Integer>> airship;						
+    private HashMap<String, List<String>> movements;						
+    private String agentPosition;												
+    private int agentEnergy;													
     private int totalCrewMembers;
     
 
@@ -63,21 +40,18 @@ public class AmongEnvironmentState extends EnvironmentState {
     public Object clone() {
     	
         return airship.clone();
-        
-        
     }
 
     @Override
     public void initState() {
-        
-        //INICIALIZA LA NAVE
-        
+    	
         //1 ==> MAPA COMPLETO
         //2 ==> MAPA REDUCIDO --> COMENTAR LAS ACCIONES QUE YA NO PUEDE HACER
-        
-        this.initAirship(2);
-        this.setAgentPosition(ONE);
-        this.setAgentEnergy(500);
+    	
+		airship = new HashMap<String, List<Integer>>();
+		movements = new HashMap<String, List<String>>();
+		
+        this.initAirship(1);
         
     }
 
@@ -87,10 +61,7 @@ public class AmongEnvironmentState extends EnvironmentState {
     }
     
 	
-	
-	
-	
-	public HashMap<String, Collection<Integer>>  getAirship() {
+	public HashMap<String, List<Integer>>  getAirship() {
         return airship;
     }
 
@@ -110,16 +81,16 @@ public class AmongEnvironmentState extends EnvironmentState {
     public int getTotalTasks() {
     	int n = 0;
    
-    	for (Entry<String, Collection<Integer>> room : airship.entrySet())
+    	for (Entry<String, List<Integer>> room : airship.entrySet())
     	{
-    		n += (int)room.getValue().toArray()[1];
+    		n += room.getValue().get(1);
     	}
     	return n;
     }
     
   
     
-    public void setAirship(HashMap<String, Collection<Integer>>  airship) {
+    public void setAirship(HashMap<String, List<Integer>>  airship) {
         this.airship = airship;
     }
     
@@ -136,118 +107,105 @@ public class AmongEnvironmentState extends EnvironmentState {
     }
 
    
-    public void setRoomValues(String position, Collection<Integer> room) {
+    public void setRoomValues(String position, List<Integer> room) {
     		
     	airship.put(position, room);
     }
     
-    public Collection<Integer> getAirshipRoomValues(String room) {
+    public List<Integer> getAirshipRoomValues(String room) {
     	
     	return airship.get(room);
    
    }
-    
   
-    private void initAirship(int id)
+    private void initAirship(int type)
     {
-    	int members = 0;
     	
-    	switch(id)
+    	switch(type)
     	{
-    		case 1:
-    			
-    			
-    			airship.put(ONE, Arrays.asList(1, 1));
-    			airship.put(TWO, Arrays.asList(0, 0));
-    			airship.put(THREE, Arrays.asList(1, 1));
-    			airship.put(FOUR, Arrays.asList(2, 0));
-    			airship.put(FIVE, Arrays.asList(0, 0));
-    			airship.put(SIX, Arrays.asList(0, 0));
-    			airship.put(SEVEN, Arrays.asList(1, 0));
-    			airship.put(EIGHT, Arrays.asList(0, 0));
-    			airship.put(NINE, Arrays.asList(0, 0));
-    			airship.put(TEN, Arrays.asList(1, 0));
-    			airship.put(ELEVEN, Arrays.asList(0, 0));
-    			airship.put(TWELVE, Arrays.asList(1, 0));
-    			airship.put(THIRTEEN, Arrays.asList(0, 1));
-    			airship.put(FOURTEEN, Arrays.asList(0, 0));
-    	        
-    			
-    			movements = new HashMap<String, Collection<String>>();
-    	    	
-    	        for (int i = 0; i < POSITIONS.length; i++) {
-    	            ArrayList<String> successors = new ArrayList<String>();
-    	            for (int j = 1; j < POSITIONS[i].length; j++) {
-    	                successors.add(POSITIONS[i][j]);
-    	            }
-    	            movements.put(POSITIONS[i][0], successors);
-    	        }
-    			
-    			airship = new HashMap<String, Collection<Integer>>();
-
-    	        for (Entry<String, Collection<Integer>> room : airship.entrySet()) members += (int)room.getValue().toArray()[0];
-    	    	   
-    	        this.setTotalCrewMembers(members);
-    	        
-    		break;
+    	case 1:
     		
-    		case 2: 
-    			
-    			movements = new HashMap<String, Collection<String>>();
-    	    	
-    	        for (int i = 0; i < POSITIONS.length; i++) {
-    	            ArrayList<String> successors = new ArrayList<String>();
-    	            for (int j = 1; j < POSITIONS[i].length; j++) {
-    	                successors.add(POSITIONS[i][j]);
-    	            }
-    	            movements.put(POSITIONS[i][0], successors);
-    	        }
-
-    			airship = new HashMap<String, Collection<Integer>>();
-    			
-    			airship.put(ONE, Arrays.asList(1, 1));
-    			airship.put(TWO, Arrays.asList(0, 0));
-    			airship.put(THREE, Arrays.asList(1, 1));
-    			airship.put(FOUR, Arrays.asList(2, 0));
-    			//airship.put(FIVE, Arrays.asList(0, 0));
-    			//airship.put(SIX, Arrays.asList(0, 0));
-    			//airship.put(SEVEN, Arrays.asList(1, 0));
-    			//airship.put(EIGHT, Arrays.asList(0, 0));
-    			//airship.put(NINE, Arrays.asList(0, 0));
-    			//airship.put(TEN, Arrays.asList(1, 0));
-    			//airship.put(ELEVEN, Arrays.asList(0, 0));
-    			//airship.put(TWELVE, Arrays.asList(1, 0));
-    			//airship.put(THIRTEEN, Arrays.asList(0, 1));
-    			//airship.put(FOURTEEN, Arrays.asList(0, 0));
-    	        
-    	  
-    	        for (Entry<String, Collection<Integer>> room : airship.entrySet())
-    	    	{
-    	    		members += (int)room.getValue().toArray()[0];
-    	    	}
-    	        
-    	        this.setTotalCrewMembers(members);
-    			
-    		break;
-    			
-    		
+    		airship.put(ONE, Arrays.asList(1, 1));
+			airship.put(TWO, Arrays.asList(0, 0));
+			airship.put(THREE, Arrays.asList(1, 1));
+			airship.put(FOUR, Arrays.asList(2, 0));
+			airship.put(FIVE, Arrays.asList(0, 0));
+			airship.put(SIX, Arrays.asList(0, 0));
+			airship.put(SEVEN, Arrays.asList(1, 0));
+			airship.put(EIGHT, Arrays.asList(0, 0));
+			airship.put(NINE, Arrays.asList(0, 0));
+			airship.put(TEN, Arrays.asList(1, 0));
+			airship.put(ELEVEN, Arrays.asList(0, 0));
+			airship.put(TWELVE, Arrays.asList(1, 0));
+			airship.put(THIRTEEN, Arrays.asList(0, 1));
+			airship.put(FOURTEEN, Arrays.asList(0, 0));
+			break;
+			
+    	case 2:
+    		airship.put(ONE, Arrays.asList(1, 1));
+			airship.put(TWO, Arrays.asList(0, 0));
+			airship.put(THREE, Arrays.asList(1, 1));
+			airship.put(FOUR, Arrays.asList(2, 0));
+			break;
     	}
+    	
+    	movements = successors();
+    	totalCrewMembers = 4;
+    	agentPosition = ONE;
+    	agentEnergy = 50;
+    	
     }
     
+    public static List<String> successorNodesONE = List.of(TWO, THREE, FOUR);
+    public static List<String> successorNodesTWO = List.of(ONE, THREE, FOUR, FIVE, SEVEN);
+    public static List<String> successorNodesTHREE = List.of(ONE, TWO, FOUR, SIX, EIGHT);
+    public static List<String> successorNodesFOUR = List.of(TWO, THREE);
+    public static List<String> successorNodesFIVE = List.of(TWO, SEVEN);
+    public static List<String> successorNodesSIX = List.of(THREE, EIGHT);
+    public static List<String> successorNodesSEVEN = List.of(TWO, NINE, FIVE);
+    public static List<String> successorNodesEIGHT = List.of(TEN, SIX, THREE, ELEVEN, TWELVE);
+    public static List<String> successorNodesNINE = List.of(SEVEN, THIRTEEN, FOURTEEN, ELEVEN);
+    public static List<String> successorNodesTEN = List.of(SEVEN, EIGHT);
+    public static List<String> successorNodesELEVEN = List.of(EIGHT, TWELVE);
+    public static List<String> successorNodesTWELVE = List.of(THIRTEEN, NINE, FOURTEEN);
+    public static List<String> successorNodesTHIRTEEN = List.of(THIRTEEN, NINE, TWELVE, FOURTEEN);
+    public static List<String> successorNodesFOURTEEN = List.of(FOURTEEN, NINE, THIRTEEN, TWELVE);
     
-    public HashMap<String, Collection<Integer>> getAdjacency(String position) {
+    public HashMap<String, List<String>> successors(){
     	
-    	Collection<String> rooms = movements.get(position);
-    	rooms.add(position);
+    	HashMap<String, List<String>> s = new HashMap<>();
+		
+    	s.put(ONE, successorNodesONE);
+    	s.put(TWO, successorNodesTWO);
+    	s.put(THREE, successorNodesTHREE);
+    	s.put(FOUR, successorNodesFOUR);
+    	s.put(FIVE, successorNodesFIVE);
+    	s.put(SIX, successorNodesSIX);
+		s.put(SEVEN, successorNodesSEVEN);
+		s.put(EIGHT, successorNodesEIGHT);
+		s.put(NINE, successorNodesNINE);
+		s.put(TEN, successorNodesTEN);
+		s.put(ELEVEN, successorNodesELEVEN);
+		s.put(TWELVE, successorNodesTWELVE);
+		s.put(THIRTEEN, successorNodesTHIRTEEN);
+		s.put(FOURTEEN, successorNodesFOURTEEN);
+		
+		return s;
+    }
+    
+    public HashMap<String, List<Integer>> getAdjacency(String position) {
     	
-    	HashMap<String, Collection<Integer>> adjacentRooms = new HashMap<String, Collection<Integer>>();
-
+    	List<String> rooms = movements.get(position);
+    	HashMap<String, List<Integer>> adjacentRooms = new HashMap<String, List<Integer>>();
+    	adjacentRooms.put(position, airship.get(position));
     	
     	for(String room : rooms)
-    	{
-    		Collection<Integer> aux = airship.get(room);
-    		adjacentRooms.put(room, aux);
-    	}
+    		{
+    		if (room == ONE || room == TWO || room == THREE || room == FOUR) // ESTE IF DESPUES SACARLOOOOOOOOOOOO
+    		{
+    			adjacentRooms.put(room, airship.get(room));
+    		}
+    		}
     	
     	return adjacentRooms;
     
@@ -260,23 +218,24 @@ public class AmongEnvironmentState extends EnvironmentState {
 		
         str.append("\n=============\nTotal de tripulanes: " + totalCrewMembers + "\n");
         
-        	for (Entry<String, Collection<Integer>> entry : airship.entrySet()) {
+        	for (Entry<String, List<Integer>> entry : airship.entrySet()) {
     		
     	    String key = entry.getKey();
-    	    Collection<Integer> value = airship.get(key);
+    	    List<Integer> value = airship.get(key);
+    	    
     	    str.append("[" +  key + "\t");
         	
     	    if (value != null)
     	    {
-    	    	if (value.toArray()[0] == null)
+    	    	if (value.get(0) == null)
             		str.append("-,");
             	else
-            		str.append(value.toArray()[0] + ",");
+            		str.append(value.get(0) + ",");
             	
-            	if (value.toArray()[1] == null)
+            	if (value.get(1) == null)
             		str.append("-]\n");
             	else
-            		str.append(value.toArray()[1] + "]\n");
+            		str.append(value.get(1) + "]\n");
     	    }
         	
         }

@@ -1,8 +1,8 @@
 package tp_ia.among;
 
 
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import frsf.cidisi.faia.agent.Action;
 import frsf.cidisi.faia.agent.Perception;
@@ -36,7 +36,7 @@ public class AmongEnvironment extends Environment {
     	 return environmentState.toString();
     }
     
-    public HashMap<String, Collection<Integer>> getAdjacency(String position) {
+    public HashMap<String, List<Integer>> getAdjacency(String position) {
     	
     	return ((AmongEnvironmentState) this.environmentState).getAdjacency(position);
     }
