@@ -1,6 +1,8 @@
 package tp_ia.among.actions;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import frsf.cidisi.faia.agent.search.SearchAction;
 import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
@@ -11,26 +13,27 @@ import tp_ia.among.*;
 public class sabotage extends SearchAction {
 	
 	@Override
-    public SearchBasedAgentState execute(SearchBasedAgentState s) {
-        AmongAgentState amongState = (AmongAgentState) s;
+	public SearchBasedAgentState execute(SearchBasedAgentState s) {
+	    AmongAgentState amongState = (AmongAgentState) s;
 
-        String position = amongState.getPosition();
-        Collection<Integer> room = amongState.getAirshipRoomValues(position);
-        
-        if (room  == null) return null;
-        
-        if ((int)room.toArray()[1] == 1 && (amongState.getEnergy() > 0)) {
-            
-        	amongState.setEnergy(amongState.getEnergy() - 1);
-        	room.toArray()[1] = (int)room.toArray()[1]  - 1;
-        	amongState.setRoomValues(position, room);
-        	amongState.setRemainingTasks(amongState.getRemainingTasks() - 1);
-        	
-            return amongState;
-        }
+	    String position = amongState.getPosition();
+	    Collection<Integer> room = amongState.getAirshipRoomValues(position);
 
-        return null;
-    }
+	    if (room == null) return null;
+
+	    List<Integer> roomList = new ArrayList<>(room);
+
+	    if (roomList.get(1) == 1 && (amongState.getEnergy() > 0)) {
+	        amongState.setEnergy(amongState.getEnergy() - 1);
+	        roomList.set(1, roomList.get(1) - 1);
+	        amongState.setRoomValues(position, roomList); 
+	        amongState.setRemainingTasks(amongState.getRemainingTasks() - 1);
+
+	        return amongState;
+	    }
+
+	    return null;
+	}
 
     @Override
     public EnvironmentState execute(AgentState ast, EnvironmentState est) {
@@ -40,15 +43,18 @@ public class sabotage extends SearchAction {
         String position = airshipState.getAgentPosition();
         Collection<Integer> room = airshipState.getAirshipRoomValues(position);
         
-        if ((int)room.toArray()[1]  == 1 && airshipState.getAgentEnergy() > 0) {
+        List<Integer> roomList = new ArrayList<>(room);
+        
+        if (roomList.get(1)  == 1 && airshipState.getAgentEnergy() > 0) {
         	
-        	room.toArray()[1]  = 0;
+        	roomList.set(1, 0);
         	
-        	airshipState.setRoomValues(position, room);
+        	airshipState.setRoomValues(position, roomList);
         	airshipState.setAgentEnergy(airshipState.getAgentEnergy() - 1);
            
-        	amongState.setRoomValues(position, room);
+        	amongState.setRoomValues(position, roomList);
         	amongState.setEnergy(amongState.getEnergy() - 1);
+        	amongState.setRemainingTasks(amongState.getRemainingTasks() - 1);
 
             return airshipState;
         }

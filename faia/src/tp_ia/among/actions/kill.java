@@ -1,6 +1,8 @@
 package tp_ia.among.actions;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import frsf.cidisi.faia.agent.search.SearchAction;
 import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
@@ -11,25 +13,27 @@ import tp_ia.among.*;
 public class kill extends SearchAction {
 	
 	@Override
-    public SearchBasedAgentState execute(SearchBasedAgentState s) {
-        AmongAgentState amongState = (AmongAgentState) s;
+	public SearchBasedAgentState execute(SearchBasedAgentState s) {
+	    AmongAgentState amongState = (AmongAgentState) s;
 
-        String position = amongState.getPosition();
-        Collection<Integer> room = amongState.getAirshipRoomValues(position);
-        
-        if (room == null) return null;
-        
-        if ((int)room.toArray()[0] > 0 && (amongState.getEnergy() > 0)) {
-            
-        	amongState.setEnergy(amongState.getEnergy() - 1);
-        	room.toArray()[0] = (int)room.toArray()[0] - 1;
-        	amongState.setRoomValues(position, room);
-        	amongState.setRemainingCrewMembers(amongState.getRemainingCrewMembers() - 1);
-            return amongState;
-        }
+	    String position = amongState.getPosition();
+	    Collection<Integer> room = amongState.getAirshipRoomValues(position);
 
-        return null;
-    }
+	    if (room == null) return null;
+
+	    List<Integer> roomList = new ArrayList<>(room);
+
+	    if (roomList.get(0) > 0 && (amongState.getEnergy() > 0)) {
+	        amongState.setEnergy(amongState.getEnergy() - 1);
+	        roomList.set(0, roomList.get(0) - 1);
+	        amongState.setRoomValues(position, roomList); 
+	        amongState.setRemainingCrewMembers(amongState.getRemainingCrewMembers() - 1);
+
+	        return amongState;
+	    }
+
+	    return null;
+	}
 
     @Override
     public EnvironmentState execute(AgentState ast, EnvironmentState est) {
@@ -39,14 +43,16 @@ public class kill extends SearchAction {
         String position = airshipState.getAgentPosition();
         Collection<Integer> room = airshipState.getAirshipRoomValues(position);
         
+        List<Integer> roomList = new ArrayList<>(room);
+        
         if ((int)room.toArray()[0] > 0 && airshipState.getAgentEnergy() > 0) {
         	
-        	room.toArray()[0] = (int)room.toArray()[0] - 1;
+        	roomList.set(0, roomList.get(0) - 1);
         	
-        	airshipState.setRoomValues(position, room);
+        	airshipState.setRoomValues(position, roomList);
         	airshipState.setAgentEnergy(airshipState.getAgentEnergy() - 1);
         	
-        	amongState.setRoomValues(position, room);
+        	amongState.setRoomValues(position, roomList);
         	amongState.setEnergy(amongState.getEnergy() - 1);
         	amongState.setRemainingCrewMembers(amongState.getRemainingCrewMembers() - 1);
    
