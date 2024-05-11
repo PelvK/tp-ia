@@ -44,6 +44,7 @@ public class AmongEnvironmentState extends EnvironmentState {
         {FOURTEEN, NINE, THIRTEEN, TWELVE}
     };
 
+    
    
     private HashMap<String, Collection<Integer>> airship;													//LA NAVE CON LOS DATOS POR HABITACION
     private HashMap<String, Collection<String>> movements;						//LOS MOVIMIENTOS POSIBLES DESDE CADA HABITACION
@@ -68,21 +69,15 @@ public class AmongEnvironmentState extends EnvironmentState {
 
     @Override
     public void initState() {
-    	
-    	movements = new HashMap<String, Collection<String>>();
-    	
-        for (int i = 0; i < POSITIONS.length; i++) {
-            ArrayList<String> successors = new ArrayList<String>();
-            for (int j = 1; j < POSITIONS[i].length; j++) {
-                successors.add(POSITIONS[i][j]);
-            }
-            movements.put(POSITIONS[i][0], successors);
-        }
         
         //INICIALIZA LA NAVE
-        this.initAirship(1);
+        
+        //1 ==> MAPA COMPLETO
+        //2 ==> MAPA REDUCIDO --> COMENTAR LAS ACCIONES QUE YA NO PUEDE HACER
+        
+        this.initAirship(2);
         this.setAgentPosition(ONE);
-        this.setAgentEnergy(50);
+        this.setAgentEnergy(500);
         
     }
 
@@ -155,11 +150,12 @@ public class AmongEnvironmentState extends EnvironmentState {
   
     private void initAirship(int id)
     {
+    	int members = 0;
+    	
     	switch(id)
     	{
     		case 1:
     			
-    			airship = new HashMap<String, Collection<Integer>>();
     			
     			airship.put(ONE, Arrays.asList(1, 1));
     			airship.put(TWO, Arrays.asList(0, 0));
@@ -176,9 +172,55 @@ public class AmongEnvironmentState extends EnvironmentState {
     			airship.put(THIRTEEN, Arrays.asList(0, 1));
     			airship.put(FOURTEEN, Arrays.asList(0, 0));
     	        
-    	
-    	        int members = 0;
+    			
+    			movements = new HashMap<String, Collection<String>>();
+    	    	
+    	        for (int i = 0; i < POSITIONS.length; i++) {
+    	            ArrayList<String> successors = new ArrayList<String>();
+    	            for (int j = 1; j < POSITIONS[i].length; j++) {
+    	                successors.add(POSITIONS[i][j]);
+    	            }
+    	            movements.put(POSITIONS[i][0], successors);
+    	        }
+    			
+    			airship = new HashMap<String, Collection<Integer>>();
+
+    	        for (Entry<String, Collection<Integer>> room : airship.entrySet()) members += (int)room.getValue().toArray()[0];
+    	    	   
+    	        this.setTotalCrewMembers(members);
     	        
+    		break;
+    		
+    		case 2: 
+    			
+    			movements = new HashMap<String, Collection<String>>();
+    	    	
+    	        for (int i = 0; i < POSITIONS.length; i++) {
+    	            ArrayList<String> successors = new ArrayList<String>();
+    	            for (int j = 1; j < POSITIONS[i].length; j++) {
+    	                successors.add(POSITIONS[i][j]);
+    	            }
+    	            movements.put(POSITIONS[i][0], successors);
+    	        }
+
+    			airship = new HashMap<String, Collection<Integer>>();
+    			
+    			airship.put(ONE, Arrays.asList(1, 1));
+    			airship.put(TWO, Arrays.asList(0, 0));
+    			airship.put(THREE, Arrays.asList(1, 1));
+    			airship.put(FOUR, Arrays.asList(2, 0));
+    			//airship.put(FIVE, Arrays.asList(0, 0));
+    			//airship.put(SIX, Arrays.asList(0, 0));
+    			//airship.put(SEVEN, Arrays.asList(1, 0));
+    			//airship.put(EIGHT, Arrays.asList(0, 0));
+    			//airship.put(NINE, Arrays.asList(0, 0));
+    			//airship.put(TEN, Arrays.asList(1, 0));
+    			//airship.put(ELEVEN, Arrays.asList(0, 0));
+    			//airship.put(TWELVE, Arrays.asList(1, 0));
+    			//airship.put(THIRTEEN, Arrays.asList(0, 1));
+    			//airship.put(FOURTEEN, Arrays.asList(0, 0));
+    	        
+    	  
     	        for (Entry<String, Collection<Integer>> room : airship.entrySet())
     	    	{
     	    		members += (int)room.getValue().toArray()[0];
@@ -187,6 +229,7 @@ public class AmongEnvironmentState extends EnvironmentState {
     	        this.setTotalCrewMembers(members);
     			
     		break;
+    			
     		
     	}
     }
@@ -215,7 +258,7 @@ public class AmongEnvironmentState extends EnvironmentState {
 		
 		StringBuffer str = new StringBuffer();
 		
-        str.append("\nTotal de tripulanes: " + totalCrewMembers + "\n");
+        str.append("\n=============\nTotal de tripulanes: " + totalCrewMembers + "\n");
         
         	for (Entry<String, Collection<Integer>> entry : airship.entrySet()) {
     		

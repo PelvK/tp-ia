@@ -13,21 +13,21 @@ public class goto1 extends SearchAction{
     @Override
     public SearchBasedAgentState execute(SearchBasedAgentState s){
     	
-        AmongAgentState agentState = (AmongAgentState) s;
-        int energy = agentState.getEnergy();
-        ArrayList<String> possibleMovments = new ArrayList<String>();
+        AmongAgentState state = (AmongAgentState) s;
+        int energy = state.getEnergy();
+        ArrayList<String> possibleMovements = new ArrayList<String>();
         
-        Collection<String> aux = agentState.getPosibleMovements();
+        Collection<String> aux = state.getPosibleMovements();
         
-        possibleMovments.addAll(aux);
+        possibleMovements.addAll(aux);
 
-        if (possibleMovments != null && energy > 0) {
-            int index = possibleMovments.indexOf(AmongAgentState.ONE); 
+        if (possibleMovements != null && energy > 0) {
+            int index = possibleMovements.indexOf(AmongAgentState.ONE); 
             if (index >= 0) {
-                agentState.setPosition(AmongAgentState.ONE);
-                agentState.setEnergy(energy-1);
+                state.setPosition(AmongAgentState.ONE);
+                state.setEnergy(energy-1);
 
-                return agentState;
+                return state;
             }
 
         }
@@ -37,15 +37,32 @@ public class goto1 extends SearchAction{
    
     @Override
     public EnvironmentState execute(AgentState ast, EnvironmentState est) {
+    	
+    	
+    	
+    	AmongAgentState amongState = (AmongAgentState) ast;
+    	AmongEnvironmentState airshipState = (AmongEnvironmentState) est;
+    	
     
+    	int amongEnergy = airshipState.getAgentEnergy();
+    	ArrayList<String> possibleMovements = new ArrayList<String>();
+    	Collection<String> aux = amongState.getPosibleMovements();
     	
-    	AmongEnvironmentState environmentState = (AmongEnvironmentState) est;
-    	 
-    	environmentState.setAgentEnergy(environmentState.getAgentEnergy() - 1);
-    	environmentState.setAgentPosition(AmongAgentState.ONE);
-
-    	this.execute((SearchBasedAgentState) ast);
+    	possibleMovements.addAll(aux);
     	
+    	if(possibleMovements != null && amongEnergy > 0)
+    	{
+    		int index = possibleMovements.indexOf(AmongAgentState.ONE);
+    		if (index >= 0) {
+    			amongState.setPosition(AmongAgentState.ONE);
+    			amongState.setEnergy(amongEnergy-1);
+    			airshipState.setAgentPosition(AmongAgentState.ONE);
+    			airshipState.setAgentEnergy(amongEnergy - 1);
+    			
+    			return airshipState;
+    		}
+    		
+    	}    	
     	return null;
     }
 
@@ -56,7 +73,7 @@ public class goto1 extends SearchAction{
 
     @Override
     public Double getCost() {
-    	return 0.0;
+    	return 1.0;
     }
     
 }

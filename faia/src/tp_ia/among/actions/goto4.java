@@ -1,6 +1,7 @@
 package tp_ia.among.actions;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import frsf.cidisi.faia.agent.search.SearchAction;
 import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
@@ -38,13 +39,29 @@ public class goto4 extends SearchAction{
     public EnvironmentState execute(AgentState ast, EnvironmentState est) {
     
     	
-    	AmongEnvironmentState environmentState = (AmongEnvironmentState) est;
-    	 
-    	environmentState.setAgentEnergy(environmentState.getAgentEnergy() - 1);
-    	environmentState.setAgentPosition(AmongAgentState.FOUR);
-
-    	this.execute((SearchBasedAgentState) ast);
+    	AmongAgentState amongState = (AmongAgentState) ast;
+    	AmongEnvironmentState airshipState = (AmongEnvironmentState) est;
     	
+    
+    	int amongEnergy = airshipState.getAgentEnergy();
+    	ArrayList<String> possibleMovements = new ArrayList<String>();
+    	Collection<String> aux = amongState.getPosibleMovements();
+    	
+    	possibleMovements.addAll(aux);
+    	
+    	if(possibleMovements != null && amongEnergy > 0)
+    	{
+    		int index = possibleMovements.indexOf(AmongAgentState.FOUR);
+    		if (index >= 0) {
+    			amongState.setPosition(AmongAgentState.FOUR);
+    			amongState.setEnergy(amongEnergy-1);
+    			airshipState.setAgentPosition(AmongAgentState.FOUR);
+    			airshipState.setAgentEnergy(amongEnergy - 1);
+    			
+    			return airshipState;
+    		}
+    		
+    	}    	
     	return null;
     }
 
@@ -55,7 +72,7 @@ public class goto4 extends SearchAction{
 
     @Override
     public Double getCost() {
-    	return 0.0;
+    	return 1.0;
     }
     
 }

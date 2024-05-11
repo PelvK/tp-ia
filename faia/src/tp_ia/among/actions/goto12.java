@@ -1,6 +1,7 @@
 package tp_ia.among.actions;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import frsf.cidisi.faia.agent.search.SearchAction;
 import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
@@ -12,15 +13,15 @@ public class goto12 extends SearchAction{
 	
     @Override
     public SearchBasedAgentState execute(SearchBasedAgentState s){
-        AmongAgentState agentState = (AmongAgentState) s; // trata a s del tipo AmongAgentState
+        AmongAgentState agentState = (AmongAgentState) s;
         int energy = agentState.getEnergy();
 
-        ArrayList<String> possibleMovments = new ArrayList<String>(); // para ver a donde se puede mover
+        ArrayList<String> possibleMovments = new ArrayList<String>(); 
         possibleMovments.addAll(agentState.getPosibleMovements());
 
 
         if (possibleMovments != null && energy > 0) {
-            int index = possibleMovments.indexOf(AmongAgentState.TWELVE); // si ONE esta en la lista, establece la posicion del agente en ONE
+            int index = possibleMovments.indexOf(AmongAgentState.TWELVE); 
             if (index >= 0) {
                 agentState.setPosition(AmongAgentState.TWELVE);
                 agentState.setEnergy(energy-1);
@@ -37,26 +38,29 @@ public class goto12 extends SearchAction{
     @Override
     public EnvironmentState execute(AgentState ast, EnvironmentState est) {
     	
-    	/*
-    	AmongEnvironmentState environmentState = (AmongEnvironmentState) est;
-    	AmongAgentState amongState = ((AmongAgentState) ast);
+    	AmongAgentState amongState = (AmongAgentState) ast;
+    	AmongEnvironmentState airshipState = (AmongEnvironmentState) est;
     	
-    	amongState.setPosition(AmongAgentState.TWELVE);
-    	amongState.setEnergy(amongState.getEnergy() - 1);
+    
+    	int amongEnergy = airshipState.getAgentEnergy();
+    	ArrayList<String> possibleMovements = new ArrayList<String>();
+    	Collection<String> aux = amongState.getPosibleMovements();
     	
+    	possibleMovements.addAll(aux);
     	
-    	environmentState.setAgentEnergy(environmentState.getAgentEnergy() - 1);
-    	environmentState.setAgentPosition(AmongAgentState.TWELVE);
-
-        return environmentState;*/
-    	
-    	AmongEnvironmentState environmentState = (AmongEnvironmentState) est;
-    	 
-    	environmentState.setAgentEnergy(environmentState.getAgentEnergy() - 1);
-    	environmentState.setAgentPosition(AmongAgentState.TWELVE);
-
-    	this.execute((SearchBasedAgentState) ast);
-    	
+    	if(possibleMovements != null && amongEnergy > 0)
+    	{
+    		int index = possibleMovements.indexOf(AmongAgentState.TWELVE);
+    		if (index >= 0) {
+    			amongState.setPosition(AmongAgentState.TWELVE);
+    			amongState.setEnergy(amongEnergy-1);
+    			airshipState.setAgentPosition(AmongAgentState.TWELVE);
+    			airshipState.setAgentEnergy(amongEnergy - 1);
+    			
+    			return airshipState;
+    		}
+    		
+    	}    	
     	return null;
     }
 
@@ -67,7 +71,7 @@ public class goto12 extends SearchAction{
 
     @Override
     public Double getCost() {
-    	return 0.0;
+    	return 1.0;
     }
     
 }

@@ -52,25 +52,6 @@ public class AmongAgentState extends SearchBasedAgentState {
     }
     
     
-    
-    @Override
-    public SearchBasedAgentState clone() {
-    	
-    	HashMap<String, Collection<Integer>>  newAirship = new HashMap<String, Collection<Integer>>();
-    	
-    	for (Entry<String, Collection<Integer>> entry : newAirship.entrySet()) {
-            newAirship.put(entry.getKey(), entry.getValue());
-        }
-        
-        String newPosition = position;
-        Integer newEnergy = energy;
-
-        AmongAgentState newState = new AmongAgentState(newAirship, this.getPosition(), this.energy, this.movements, this.remainingCrewMembers, this.remainingTasks);
-
-        return newState;
-    }
-    
-    
     @Override
     public void initState() {
         position = ONE;
@@ -102,14 +83,50 @@ public class AmongAgentState extends SearchBasedAgentState {
 
         }
         
-        this.setFirtsValues();
+        
+        airship.put(ONE, null);
+    	airship.put(TWO, null);
+    	airship.put(THREE, null);
+    	airship.put(FOUR, null);
+    	//airship.put(FIVE, null);
+    	//airship.put(SIX, null);
+    	//airship.put(SEVEN, null);
+    	//airship.put(EIGHT, null);
+    	//airship.put(NINE, null);
+    	//airship.put(TEN, null);
+    	//airship.put(ELEVEN, null);
+    	//airship.put(TWELVE, null);
+    	//airship.put(THIRTEEN, null);
+    	//airship.put(FOURTEEN, null);
+       
         this.setPosition(ONE);
-        this.setEnergy(50);
-        this.setRemainingCrewMembers(7);
-        this.setRemainingTasks(3);
+        this.setEnergy(500);
+        this.setRemainingCrewMembers(4);
+        this.setRemainingTasks(2);
         
         
     }
+    
+    @Override
+    public SearchBasedAgentState clone() {
+    	
+    	HashMap<String, Collection<Integer>>  newAirship = new HashMap<String, Collection<Integer>>();
+    	
+    	for (Entry<String, Collection<Integer>> entry : newAirship.entrySet()) {
+            newAirship.put(entry.getKey(), entry.getValue());
+        }
+
+        AmongAgentState newState = new AmongAgentState(
+        		newAirship, 
+        		this.getPosition(), 
+        		this.getEnergy(), 
+        		this.movements, 
+        		this.remainingCrewMembers, 
+        		this.remainingTasks);
+
+        return newState;
+    }
+    
 
     @Override
     public void updateState(Perception p) {
@@ -127,22 +144,26 @@ public class AmongAgentState extends SearchBasedAgentState {
     	}
     	
     	energy = this.getEnergy();
-    	remainingTasks = this.getRemainingTasks();
-    	remainingCrewMembers = this.getRemainingCrewMembers();
+    	remainingTasks = this.getRemainingTasks() ;
+    	remainingCrewMembers = this.getRemainingCrewMembers() ;
     	position = this.getPosition();
     
     }
     
     @Override
     public boolean equals(Object obj) {
+    	
+    	AmongAgentState compare = (AmongAgentState) obj;
+    	
+    	boolean sameEnergy = compare.getEnergy() == this.getEnergy();
+    	boolean sameRoom = compare.getPosition() == this.getPosition();
+    	boolean sameRemainingCrewmembers = compare.getRemainingCrewMembers() == this.getRemainingCrewMembers();
+    	boolean sameRemainingTask = compare.getRemainingTasks() == this.getRemainingTasks();
+    	
+    	return (sameEnergy && sameRoom && sameRemainingCrewmembers && sameRemainingTask);
 
-        if (!(obj instanceof AmongAgentState)) {
-            return false;
-        }
-        return position.equals(((AmongAgentState) obj).getPosition());
+     
     }
-    
-    
     
     
     
@@ -160,65 +181,49 @@ public class AmongAgentState extends SearchBasedAgentState {
         return position;
     }
 
-    public void setPosition(String position) {
-        this.position = position;
-    }
-    
     public int getEnergy() {
         return energy;
     }
 
-    public void setEnergy(int energy) {
-        this.energy = energy;
-    }
-    
     public int getRemainingCrewMembers() {
         return remainingCrewMembers;
     }
 
-    public void setRemainingCrewMembers(int crewMembers) {
-        this.remainingCrewMembers = crewMembers;
-    }
-
     public int getRemainingTasks() {
         return remainingTasks;
-    }
-
-    public void setRemainingTasks(int tasks) {
-        this.remainingTasks = tasks;
-    }
-
-    
-    public void setFirtsValues()
-    {
-    	airship.put(ONE, null);
-    	airship.put(TWO, null);
-    	airship.put(THREE, null);
-    	airship.put(FOUR, null);
-    	airship.put(FIVE, null);
-    	airship.put(SIX, null);
-    	airship.put(SEVEN, null);
-    	airship.put(EIGHT, null);
-    	airship.put(NINE, null);
-    	airship.put(TEN, null);
-    	airship.put(ELEVEN, null);
-    	airship.put(TWELVE, null);
-    	airship.put(THIRTEEN, null);
-    	airship.put(FOURTEEN, null);
- 	
-    }
-    
-    
-    public void setRoomValues(String position, Collection<Integer> room) {
-    	
-    	airship.put(position, room);
-    	
     }
     
     public Collection<String> getPosibleMovements() {
     	
         return movements.get(position);
     }
+    
+    
+    
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    public void setRemainingCrewMembers(int crewMembers) {
+        this.remainingCrewMembers = crewMembers;
+    }
+
+    public void setRemainingTasks(int tasks) {
+        this.remainingTasks = tasks;
+    }
+
+    public void setRoomValues(String position, Collection<Integer> room) {
+    	
+    	airship.put(position, room);
+    	
+    }
+    
+ 
+    
     
     public Boolean isAlive() {
         return this.getEnergy() >= 0;
@@ -236,7 +241,7 @@ public class AmongAgentState extends SearchBasedAgentState {
     public String toString() {
     	
     	StringBuffer str = new StringBuffer();
-        str.append("\n--Posicion: " + position + " \n");
+        str.append("\n=============\n--Posicion: " + position + " \n");
         str.append("--Tareas Restantes: " + remainingTasks + " \n");
         str.append("--Tipulantes Restantes: "+remainingCrewMembers+"\n");
         str.append("--Energia: " + energy + " \n");
@@ -262,6 +267,10 @@ public class AmongAgentState extends SearchBasedAgentState {
             		str.append("-]\n");
             	else
             		str.append(value.toArray()[1] + "]");
+    	    }
+    	    else
+    	    {
+    	    	str.append("-,-]");
     	    }
     	    str.append("\n");
         }

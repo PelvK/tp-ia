@@ -1,6 +1,7 @@
 package tp_ia.among.actions;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import frsf.cidisi.faia.agent.search.SearchAction;
 import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
@@ -36,27 +37,29 @@ public class goto2 extends SearchAction{
    
     @Override
     public EnvironmentState execute(AgentState ast, EnvironmentState est) {
-    	/*
-    	AmongEnvironmentState environmentState = (AmongEnvironmentState) est;
-    	AmongAgentState amongState = ((AmongAgentState) ast);
+    	AmongAgentState amongState = (AmongAgentState) ast;
+    	AmongEnvironmentState airshipState = (AmongEnvironmentState) est;
     	
-    	amongState.setPosition(AmongAgentState.TWO);
-    	amongState.setEnergy(amongState.getEnergy() - 1);
+    
+    	int amongEnergy = airshipState.getAgentEnergy();
+    	ArrayList<String> possibleMovements = new ArrayList<String>();
+    	Collection<String> aux = amongState.getPosibleMovements();
     	
+    	possibleMovements.addAll(aux);
     	
-    	environmentState.setAgentEnergy(environmentState.getAgentEnergy() - 1);
-    	environmentState.setAgentPosition(AmongAgentState.TWO);
-
-        return environmentState;
-        */
-    	
-    	AmongEnvironmentState environmentState = (AmongEnvironmentState) est;
-    	 
-    	environmentState.setAgentEnergy(environmentState.getAgentEnergy() - 1);
-    	environmentState.setAgentPosition(AmongAgentState.TWO);
-
-    	this.execute((SearchBasedAgentState) ast);
-    	
+    	if(possibleMovements != null && amongEnergy > 0)
+    	{
+    		int index = possibleMovements.indexOf(AmongAgentState.TWO);
+    		if (index >= 0) {
+    			amongState.setPosition(AmongAgentState.TWO);
+    			amongState.setEnergy(amongEnergy-1);
+    			airshipState.setAgentPosition(AmongAgentState.TWO);
+    			airshipState.setAgentEnergy(amongEnergy - 1);
+    			
+    			return airshipState;
+    		}
+    		
+    	}    	
     	return null;
     }
 
@@ -67,7 +70,7 @@ public class goto2 extends SearchAction{
 
     @Override
     public Double getCost() {
-    	return 0.0;
+    	return 1.0;
     }
     
 }

@@ -1,6 +1,7 @@
 package tp_ia.among.actions;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import frsf.cidisi.faia.agent.search.SearchAction;
 import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
@@ -37,29 +38,31 @@ public class goto10 extends SearchAction{
     @Override
     public EnvironmentState execute(AgentState ast, EnvironmentState est) {
     	
-    	/*
+    	AmongAgentState amongState = (AmongAgentState) ast;
+    	AmongEnvironmentState airshipState = (AmongEnvironmentState) est;
     	
-    	AmongEnvironmentState environmentState = (AmongEnvironmentState) est;
-    	AmongAgentState amongState = ((AmongAgentState) ast);
+    
+    	int amongEnergy = airshipState.getAgentEnergy();
+    	ArrayList<String> possibleMovements = new ArrayList<String>();
+    	Collection<String> aux = amongState.getPosibleMovements();
     	
-    	amongState.setPosition(AmongAgentState.TEN);
-    	amongState.setEnergy(amongState.getEnergy() - 1);
+    	possibleMovements.addAll(aux);
     	
-    	
-    	environmentState.setAgentEnergy(environmentState.getAgentEnergy() - 1);
-    	environmentState.setAgentPosition(AmongAgentState.TEN);
-
-        return environmentState;
-        */
-    	
-    	AmongEnvironmentState environmentState = (AmongEnvironmentState) est;
- 
-    	environmentState.setAgentEnergy(environmentState.getAgentEnergy() - 1);
-    	environmentState.setAgentPosition(AmongAgentState.TEN);
-
-    	this.execute((SearchBasedAgentState) ast);
-    	
+    	if(possibleMovements != null && amongEnergy > 0)
+    	{
+    		int index = possibleMovements.indexOf(AmongAgentState.TEN);
+    		if (index >= 0) {
+    			amongState.setPosition(AmongAgentState.TEN);
+    			amongState.setEnergy(amongEnergy-1);
+    			airshipState.setAgentPosition(AmongAgentState.TEN);
+    			airshipState.setAgentEnergy(amongEnergy - 1);
+    			
+    			return airshipState;
+    		}
+    		
+    	}    	
     	return null;
+    	
     	
     }
 
@@ -71,7 +74,7 @@ public class goto10 extends SearchAction{
     @Override
     public Double getCost() {
     	
-    	return 0.0;
+    	return 1.0;
     }
     
 }
