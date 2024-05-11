@@ -1,8 +1,7 @@
 package tp_ia.among.actions;
 
-import java.util.ArrayList;
-import java.util.Collection;
 
+import java.util.List;
 import frsf.cidisi.faia.agent.search.SearchAction;
 import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
 import frsf.cidisi.faia.state.AgentState;
@@ -11,57 +10,55 @@ import tp_ia.among.*;
 
 public class goto12 extends SearchAction{
 	
-    @Override
-    public SearchBasedAgentState execute(SearchBasedAgentState s){
-        AmongAgentState agentState = (AmongAgentState) s;
-        int energy = agentState.getEnergy();
+	 @Override
+	    public SearchBasedAgentState execute(SearchBasedAgentState s){
+	    	
+	        AmongAgentState state = (AmongAgentState) s;
+	        int energy = state.getEnergy();
+	        
+	        List<String> possibleMovements = state.getPosibleMovements();
+	        
+	        if (possibleMovements != null && energy > 0) {
+	            int index = possibleMovements.indexOf(GlobalVars.TWELVE); 
+	            
+	            if (index >= 0) {
+	                state.setPosition(GlobalVars.TWELVE);
+	                state.setEnergy(energy-1);
+	                
+	                return state;
+	            }
+	        }
+	        return null;
+	    }
 
-        ArrayList<String> possibleMovments = new ArrayList<String>(); 
-        possibleMovments.addAll(agentState.getPosibleMovements());
+	   
+	    @Override
+	    public EnvironmentState execute(AgentState ast, EnvironmentState est) {
+	    	
+	    	
+	    	
+	    	AmongAgentState amongState = (AmongAgentState) ast;
+	    	AmongEnvironmentState airshipState = (AmongEnvironmentState) est;
+	    	
+	    
+	    	int amongEnergy = airshipState.getAgentEnergy();
+	    	List<String> possibleMovements = amongState.getPosibleMovements();
 
-
-        if (possibleMovments != null && energy > 0) {
-            int index = possibleMovments.indexOf(AmongAgentState.TWELVE); 
-            if (index >= 0) {
-                agentState.setPosition(AmongAgentState.TWELVE);
-                agentState.setEnergy(energy-1);
-
-                return agentState;
-            }
-
-        }
-
-        return null;
-    }
-
-   
-    @Override
-    public EnvironmentState execute(AgentState ast, EnvironmentState est) {
-    	
-    	AmongAgentState amongState = (AmongAgentState) ast;
-    	AmongEnvironmentState airshipState = (AmongEnvironmentState) est;
-    	
-    
-    	int amongEnergy = airshipState.getAgentEnergy();
-    	ArrayList<String> possibleMovements = new ArrayList<String>();
-    	Collection<String> aux = amongState.getPosibleMovements();
-    	
-    	possibleMovements.addAll(aux);
-    	
-    	if(possibleMovements != null && amongEnergy > 0)
-    	{
-    		int index = possibleMovements.indexOf(AmongAgentState.TWELVE);
-    		if (index >= 0) {
-    			amongState.setPosition(AmongAgentState.TWELVE);
-    			amongState.setEnergy(amongEnergy-1);
-    			airshipState.setAgentPosition(AmongAgentState.TWELVE);
-    			airshipState.setAgentEnergy(amongEnergy - 1);
-    			
-    			return airshipState;
-    		}
-    		
-    	}    	
-    	return null;
+	    	if(possibleMovements != null && amongEnergy > 0)
+	    	{
+	    		int index = possibleMovements.indexOf(GlobalVars.TWELVE);
+	    		
+	    		if (index >= 0) {
+	    			amongState.setPosition(GlobalVars.TWELVE);
+	    			amongState.setEnergy(amongEnergy-1);
+	    			airshipState.setAgentPosition(GlobalVars.TWELVE);
+	    			airshipState.setAgentEnergy(amongEnergy - 1);
+	    			
+	    			return airshipState;
+	    		}
+	    		
+	    	}    	
+	    	return null;
     }
 
     @Override

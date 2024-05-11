@@ -10,6 +10,7 @@ import frsf.cidisi.faia.agent.search.Problem;
 import frsf.cidisi.faia.agent.search.SearchAction;
 import frsf.cidisi.faia.agent.search.SearchBasedAgent;
 import frsf.cidisi.faia.solver.search.BreathFirstSearch;
+import frsf.cidisi.faia.solver.search.DepthFirstSearch;
 import frsf.cidisi.faia.solver.search.Search;
 import tp_ia.among.actions.*;
 
@@ -22,6 +23,7 @@ public class AmongAgent extends SearchBasedAgent {
 		this.setAgentState(amongState);
 		
 		Vector<SearchAction> operators = new Vector<SearchAction>();
+		
 		operators.addElement(new kill());
 		operators.addElement(new sabotage());
 		operators.addElement(new goto1());
@@ -47,7 +49,7 @@ public class AmongAgent extends SearchBasedAgent {
 	@Override
 	public Action selectAction(){
 
-		BreathFirstSearch strategy = new BreathFirstSearch();
+		DepthFirstSearch strategy = new DepthFirstSearch();
 		Search searchSolver = new Search(strategy);
 		
 		searchSolver.setVisibleTree(Search.GRAPHVIZ_TREE);
@@ -55,7 +57,7 @@ public class AmongAgent extends SearchBasedAgent {
 
 		Action selectedAction = null;
 		try{
- 			selectedAction= this.getSolver().solve(new Object[]{this.getProblem()}); //devuelve el problema que el agente debe resolver
+ 			selectedAction= this.getSolver().solve(new Object[]{this.getProblem()});
 		} catch (Exception ex){
 			Logger.getLogger(AmongAgent.class.getName()).log(Level.SEVERE, null, ex);
 		}

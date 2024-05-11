@@ -19,20 +19,6 @@ public class AmongAgentState extends SearchBasedAgentState {
     private HashMap<String, List<Integer>> airship;
 	private HashMap<String, List<String>> movements;
 	
-	public static final String ONE = "Reactor(1)-----------";
-    public static final String TWO = "Upper Engine(2)------";
-    public static final String THREE = "Lower Engine(3)----";
-    public static final String FOUR = "Security(4)---------";
-    public static final String FIVE = "Medbay(5)-----------";
-    public static final String SIX = "Electrical(6)--------";
-    public static final String SEVEN = "Cafeteria(7)-------";
-    public static final String EIGHT = "Storage(8)---------";
-    public static final String NINE = "Weapons(9)----------";
-    public static final String TEN = "Admin(10)------------";
-    public static final String ELEVEN = "Communication(11)-";
-    public static final String TWELVE = "Shields(12)-------";
-    public static final String THIRTEEN = "02(13)----------";
-    public static final String FOURTEEN = "Navigation(14)--";
 	
 	
 	public AmongAgentState(HashMap<String, List<Integer>> m, String initial_position, int inital_energy,  HashMap<String, List<String>> mov, int crewmembers, int sabotage_tasks) {
@@ -54,86 +40,15 @@ public class AmongAgentState extends SearchBasedAgentState {
     @Override
     public void initState() {
     	
-    	airship = emptyAirship(1);
-    	movements = successors();
-        position = ONE;
-        energy = 50;
-        remainingCrewMembers = 4;
-        remainingTasks = 2;        
+    	airship = GlobalVars.airships(1);
+    	movements = GlobalVars.successors();
+        position = GlobalVars.initialNode;
+        energy = GlobalVars.initalAmongEnergy;
+        remainingCrewMembers = GlobalVars.totalCrewmembers;
+        remainingTasks = GlobalVars.totalSabotageTask;        
         
     }
     
-    public static List<String> successorNodesONE = List.of(TWO, THREE, FOUR);
-    public static List<String> successorNodesTWO = List.of(ONE, THREE, FOUR, FIVE, SEVEN);
-    public static List<String> successorNodesTHREE = List.of(ONE, TWO, FOUR, SIX, EIGHT);
-    public static List<String> successorNodesFOUR = List.of(TWO, THREE);
-    public static List<String> successorNodesFIVE = List.of(TWO, SEVEN);
-    public static List<String> successorNodesSIX = List.of(THREE, EIGHT);
-    public static List<String> successorNodesSEVEN = List.of(TWO, NINE, FIVE);
-    public static List<String> successorNodesEIGHT = List.of(TEN, SIX, THREE, ELEVEN, TWELVE);
-    public static List<String> successorNodesNINE = List.of(SEVEN, THIRTEEN, FOURTEEN, ELEVEN);
-    public static List<String> successorNodesTEN = List.of(SEVEN, EIGHT);
-    public static List<String> successorNodesELEVEN = List.of(EIGHT, TWELVE);
-    public static List<String> successorNodesTWELVE = List.of(THIRTEEN, NINE, FOURTEEN);
-    public static List<String> successorNodesTHIRTEEN = List.of(THIRTEEN, NINE, TWELVE, FOURTEEN);
-    public static List<String> successorNodesFOURTEEN = List.of(FOURTEEN, NINE, THIRTEEN, TWELVE);
-    
-    public HashMap<String, List<String>> successors(){
-    	
-    	HashMap<String, List<String>> s = new HashMap<>();
-		
-    	s.put(ONE, successorNodesONE);
-    	s.put(TWO, successorNodesTWO);
-    	s.put(THREE, successorNodesTHREE);
-    	s.put(FOUR, successorNodesFOUR);
-    	s.put(FIVE, successorNodesFIVE);
-    	s.put(SIX, successorNodesSIX);
-		s.put(SEVEN, successorNodesSEVEN);
-		s.put(EIGHT, successorNodesEIGHT);
-		s.put(NINE, successorNodesNINE);
-		s.put(TEN, successorNodesTEN);
-		s.put(ELEVEN, successorNodesELEVEN);
-		s.put(TWELVE, successorNodesTWELVE);
-		s.put(THIRTEEN, successorNodesTHIRTEEN);
-		s.put(FOURTEEN, successorNodesFOURTEEN);
-		
-		return s;
-    }
-    
-    public  HashMap<String, List<Integer>> emptyAirship(Integer type){
-    	
-    	HashMap<String, List<Integer>> s = new HashMap<>();
-		
-    	switch(type)
-    	{
-    	case 1:
-    		s.put(ONE,null);
-        	s.put(TWO, null);
-        	s.put(THREE, null);
-        	s.put(FOUR, null);
-        	s.put(FIVE, null);
-        	s.put(SIX, null);
-    		s.put(SEVEN, null);
-    		s.put(EIGHT, null);
-    		s.put(NINE, null);
-    		s.put(TEN, null);
-    		s.put(ELEVEN, null);
-    		s.put(TWELVE, null);
-    		s.put(THIRTEEN, null);
-    		s.put(FOURTEEN, null);
-    		break;
-    		
-    	case 2:
-    		s.put(ONE,null);
-        	s.put(TWO, null);
-        	s.put(THREE, null);
-        	s.put(FOUR, null);
-    		break;	
-    	}
-    	
-		
-		return s;
-    }
     
     @Override
     public SearchBasedAgentState clone() {
@@ -144,8 +59,6 @@ public class AmongAgentState extends SearchBasedAgentState {
     	for (Entry<String, List<Integer>> entry : airship.entrySet()) {
             newAirship.put(entry.getKey(), entry.getValue());
         }
-
-    	Integer i = remainingCrewMembers;
     	
         AmongAgentState newState = new AmongAgentState(
         		newAirship, 
@@ -173,23 +86,6 @@ public class AmongAgentState extends SearchBasedAgentState {
     	   
     	}
     }
-    
-    /*
-    
-    @Override
-    public boolean equals(Object obj) {
-    	
-    	AmongAgentState compare = (AmongAgentState) obj;
-    	
-    	boolean sameEnergy = compare.getEnergy() == this.getEnergy();
-    	boolean sameRoom = compare.getPosition() == this.getPosition();
-    	boolean sameRemainingCrewmembers = compare.getRemainingCrewMembers() == this.getRemainingCrewMembers();
-    	boolean sameRemainingTask = compare.getRemainingTasks() == this.getRemainingTasks();
-    	
-    	return (sameEnergy && sameRoom && sameRemainingCrewmembers && sameRemainingTask);
-
-     
-    } */
     
     
     @Override

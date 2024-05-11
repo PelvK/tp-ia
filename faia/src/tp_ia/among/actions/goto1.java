@@ -1,8 +1,7 @@
 package tp_ia.among.actions;
 
-import java.util.ArrayList;
-import java.util.Collection;
 
+import java.util.List;
 import frsf.cidisi.faia.agent.search.SearchAction;
 import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
 import frsf.cidisi.faia.state.AgentState;
@@ -15,21 +14,18 @@ public class goto1 extends SearchAction{
     	
         AmongAgentState state = (AmongAgentState) s;
         int energy = state.getEnergy();
-        ArrayList<String> possibleMovements = new ArrayList<String>();
         
-        Collection<String> aux = state.getPosibleMovements();
+        List<String> possibleMovements = state.getPosibleMovements();
         
-        possibleMovements.addAll(aux);
-
         if (possibleMovements != null && energy > 0) {
-            int index = possibleMovements.indexOf(AmongAgentState.ONE); 
+            int index = possibleMovements.indexOf(GlobalVars.ONE); 
+            
             if (index >= 0) {
-                state.setPosition(AmongAgentState.ONE);
+                state.setPosition(GlobalVars.ONE);
                 state.setEnergy(energy-1);
-
+                
                 return state;
             }
-
         }
         return null;
     }
@@ -45,18 +41,16 @@ public class goto1 extends SearchAction{
     	
     
     	int amongEnergy = airshipState.getAgentEnergy();
-    	ArrayList<String> possibleMovements = new ArrayList<String>();
-    	Collection<String> aux = amongState.getPosibleMovements();
-    	
-    	possibleMovements.addAll(aux);
-    	
+    	List<String> possibleMovements = amongState.getPosibleMovements();
+
     	if(possibleMovements != null && amongEnergy > 0)
     	{
-    		int index = possibleMovements.indexOf(AmongAgentState.ONE);
+    		int index = possibleMovements.indexOf(GlobalVars.ONE);
+    		
     		if (index >= 0) {
-    			amongState.setPosition(AmongAgentState.ONE);
+    			amongState.setPosition(GlobalVars.ONE);
     			amongState.setEnergy(amongEnergy-1);
-    			airshipState.setAgentPosition(AmongAgentState.ONE);
+    			airshipState.setAgentPosition(GlobalVars.ONE);
     			airshipState.setAgentEnergy(amongEnergy - 1);
     			
     			return airshipState;
