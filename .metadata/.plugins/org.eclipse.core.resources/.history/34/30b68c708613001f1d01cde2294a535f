@@ -1,0 +1,182 @@
+package tp_ia.among;
+
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+public class GlobalVars {
+	
+	public static final String ONE = "Reactor(1)-----------";
+    public static final String TWO = "Upper Engine(2)------";
+    public static final String THREE = "Lower Engine(3)----";
+    public static final String FOUR = "Security(4)---------";
+    public static final String FIVE = "Medbay(5)-----------";
+    public static final String SIX = "Electrical(6)--------";
+    public static final String SEVEN = "Cafeteria(7)-------";
+    public static final String EIGHT = "Storage(8)---------";
+    public static final String NINE = "Weapons(9)----------";
+    public static final String TEN = "Admin(10)------------";
+    public static final String ELEVEN = "Communication(11)-";
+    public static final String TWELVE = "Shields(12)-------";
+    public static final String THIRTEEN = "02(13)----------";
+    public static final String FOURTEEN = "Navigation(14)--";
+    
+    public static String initialNode = TWO;
+    public static int totalCrewmembers = 4;
+    public static int totalSabotageTask = 2;
+    public static int initalAmongEnergy = 50;
+    
+    public static List<String> successorNodesONE = List.of(TWO, THREE, FOUR);
+    public static List<String> successorNodesTWO = List.of(ONE, THREE, FOUR, FIVE, SEVEN);
+    public static List<String> successorNodesTHREE = List.of(ONE, TWO, FOUR, SIX, EIGHT);
+    public static List<String> successorNodesFOUR = List.of(TWO, THREE);
+    public static List<String> successorNodesFIVE = List.of(TWO, SEVEN);
+    public static List<String> successorNodesSIX = List.of(THREE, EIGHT);
+    public static List<String> successorNodesSEVEN = List.of(TWO, NINE, FIVE);
+    public static List<String> successorNodesEIGHT = List.of(TEN, SIX, THREE, ELEVEN, TWELVE);
+    public static List<String> successorNodesNINE = List.of(SEVEN, THIRTEEN, FOURTEEN, ELEVEN);
+    public static List<String> successorNodesTEN = List.of(SEVEN, EIGHT);
+    public static List<String> successorNodesELEVEN = List.of(EIGHT, TWELVE);
+    public static List<String> successorNodesTWELVE = List.of(THIRTEEN, NINE, FOURTEEN);
+    public static List<String> successorNodesTHIRTEEN = List.of(THIRTEEN, NINE, TWELVE, FOURTEEN);
+    public static List<String> successorNodesFOURTEEN = List.of(FOURTEEN, NINE, THIRTEEN, TWELVE);
+    
+    String[][] positions = new String[][]{
+        {ONE, TWO,THREE, FOUR},
+        {TWO, ONE, THREE, FOUR, FIVE, SEVEN},
+        {THREE, ONE, TWO, FOUR, SIX, EIGHT},
+        {FOUR, TWO, THREE},
+        {FIVE, TWO, SEVEN},
+        {SIX, THREE, EIGHT},
+        {SEVEN, TWO, NINE, FIVE},
+        {EIGHT, TEN, SIX, THREE, ELEVEN, TWELVE},
+        {NINE, SEVEN, THIRTEEN, FOURTEEN, ELEVEN},
+        {TEN, SEVEN, EIGHT},
+        {ELEVEN, EIGHT, TWELVE},
+        {TWELVE, THIRTEEN, NINE, FOURTEEN},
+        {THIRTEEN, NINE, TWELVE, FOURTEEN},
+        {FOURTEEN, NINE, THIRTEEN, TWELVE}
+    };
+    
+    
+    public static HashMap<String, List<Integer>> emptyAirship(Integer type){
+    	
+    	HashMap<String, List<Integer>> s = new HashMap<>();
+		
+    	switch(type)
+    	{
+    	case 1:
+    		s.put(ONE,null);
+        	s.put(TWO, null);
+        	s.put(THREE, null);
+        	s.put(FOUR, null);
+        	s.put(FIVE, null);
+        	s.put(SIX, null);
+    		s.put(SEVEN, null);
+    		s.put(EIGHT, null);
+    		s.put(NINE, null);
+    		s.put(TEN, null);
+    		s.put(ELEVEN, null);
+    		s.put(TWELVE, null);
+    		s.put(THIRTEEN, null);
+    		s.put(FOURTEEN, null);
+    		break;
+    		
+    	case 2:
+    		s.put(ONE,null);
+        	s.put(TWO, null);
+        	s.put(THREE, null);
+        	s.put(FOUR, null);
+    		break;	
+    	}
+    	
+		
+		return s;
+    }
+    
+    
+    public static HashMap<String, List<String>> successors(){
+    	
+    	HashMap<String, List<String>> s = new HashMap<>();
+		
+    	s.put(ONE, GlobalVars.successorNodesONE);
+    	s.put(TWO, GlobalVars.successorNodesTWO);
+    	s.put(THREE, GlobalVars.successorNodesTHREE);
+    	s.put(FOUR, GlobalVars.successorNodesFOUR);
+    	s.put(FIVE, GlobalVars.successorNodesFIVE);
+    	s.put(SIX, GlobalVars.successorNodesSIX);
+		s.put(SEVEN, GlobalVars.successorNodesSEVEN);
+		s.put(EIGHT, GlobalVars.successorNodesEIGHT);
+		s.put(NINE, GlobalVars.successorNodesNINE);
+		s.put(TEN, GlobalVars.successorNodesTEN);
+		s.put(ELEVEN, GlobalVars.successorNodesELEVEN);
+		s.put(TWELVE, GlobalVars.successorNodesTWELVE);
+		s.put(THIRTEEN, GlobalVars.successorNodesTHIRTEEN);
+		s.put(FOURTEEN, GlobalVars.successorNodesFOURTEEN);
+		
+		return s;
+    }
+    
+    public static HashMap<String, List<Integer>> airships(int type){
+    	
+    	HashMap<String, List<Integer>> airship = new HashMap<>();
+    	
+    	switch(type)
+    	{
+    	case 1:
+    		
+    		airship.put(ONE, Arrays.asList(1, 1));
+			airship.put(TWO, Arrays.asList(0, 0));
+			airship.put(THREE, Arrays.asList(1, 1));
+			airship.put(FOUR, Arrays.asList(2, 0));
+			airship.put(FIVE, Arrays.asList(0, 0));
+			airship.put(SIX, Arrays.asList(0, 0));
+			airship.put(SEVEN, Arrays.asList(1, 0));
+			airship.put(EIGHT, Arrays.asList(0, 0));
+			airship.put(NINE, Arrays.asList(0, 0));
+			airship.put(TEN, Arrays.asList(1, 0));
+			airship.put(ELEVEN, Arrays.asList(0, 0));
+			airship.put(TWELVE, Arrays.asList(1, 0));
+			airship.put(THIRTEEN, Arrays.asList(0, 1));
+			airship.put(FOURTEEN, Arrays.asList(0, 0));
+			break;
+			
+    	case 2:
+    		airship.put(ONE, Arrays.asList(1, 1));
+			airship.put(TWO, Arrays.asList(0, 0));
+			airship.put(THREE, Arrays.asList(1, 1));
+			airship.put(FOUR, Arrays.asList(2, 0));
+			break;
+    	}
+    	
+    	return airship;
+    }
+    
+    
+    	public static HashMap<String, List<String>> movements(int type){
+    	
+    	return successors();
+    	
+    	//por el momento retornamos eso, pero al acortar el mapa habria que reducir caminos, por eso el type
+    	
+    	/*
+    	HashMap<String, List<String>> movements = new HashMap<>();
+    	
+    	switch(type)
+    	{
+    	case 1:
+    		
+    		for (int i = 0; i < POSITIONS.length; i++) {
+	            ArrayList<String> successors = new ArrayList<String>();
+	            for (int j = 1; j < POSITIONS[i].length; j++) {
+	                successors.add(POSITIONS[i][j]);
+	            }
+	            movements.put(POSITIONS[i][0], successors);
+	        }
+    		
+    	break;
+    	}
+    	*/
+    }
+}

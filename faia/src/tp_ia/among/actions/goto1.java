@@ -16,12 +16,17 @@ public class goto1 extends SearchAction{
         int energy = state.getEnergy();
         
         List<String> possibleMovements = state.getPosibleMovements();
+        List<Integer> roomValues = state.getAirshipRoomValues(GlobalVars.ONE);
         
         if (possibleMovements != null && energy > 0) {
             int index = possibleMovements.indexOf(GlobalVars.ONE); 
             
             if (index >= 0) {
                 state.setPosition(GlobalVars.ONE);
+                if (roomValues.get(0) == -1 && roomValues.get(1) == -1)
+                {
+                	state.setRoomValues(GlobalVars.ONE, List.of(0,0));
+                }
                 state.setEnergy(energy-1);
                 
                 return state;
@@ -42,6 +47,7 @@ public class goto1 extends SearchAction{
     
     	int amongEnergy = airshipState.getAgentEnergy();
     	List<String> possibleMovements = amongState.getPosibleMovements();
+    	List<Integer> roomValues = amongState.getAirshipRoomValues(GlobalVars.ONE);
 
     	if(possibleMovements != null && amongEnergy > 0)
     	{
@@ -49,6 +55,7 @@ public class goto1 extends SearchAction{
     		
     		if (index >= 0) {
     			amongState.setPosition(GlobalVars.ONE);
+    			//amongState.setRoomValues(GlobalVars.ONE, List.of(0,0));
     			amongState.setEnergy(amongEnergy-1);
     			airshipState.setAgentPosition(GlobalVars.ONE);
     			airshipState.setAgentEnergy(amongEnergy - 1);
@@ -62,12 +69,13 @@ public class goto1 extends SearchAction{
 
     @Override
     public String toString() {
-        return "GoTo1";
+        return "ME MUEVO A 1\n=================================\n=================================\n\n";
+
     }
 
     @Override
     public Double getCost() {
-    	return 1.0;
+    	return 0.0;
     }
     
 }

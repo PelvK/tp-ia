@@ -16,12 +16,17 @@ public class goto10 extends SearchAction{
 	        int energy = state.getEnergy();
 	        
 	        List<String> possibleMovements = state.getPosibleMovements();
+	        List<Integer> roomValues = state.getAirshipRoomValues(GlobalVars.TEN);
 	        
 	        if (possibleMovements != null && energy > 0) {
 	            int index = possibleMovements.indexOf(GlobalVars.TEN); 
 	            
 	            if (index >= 0) {
 	                state.setPosition(GlobalVars.TEN);
+	                if (roomValues.get(0) == -1 && roomValues.get(1) == -1)
+	                {
+	                	state.setRoomValues(GlobalVars.TEN, List.of(0,0));
+	                }
 	                state.setEnergy(energy-1);
 	                
 	                return state;
@@ -39,16 +44,22 @@ public class goto10 extends SearchAction{
 	    	AmongAgentState amongState = (AmongAgentState) ast;
 	    	AmongEnvironmentState airshipState = (AmongEnvironmentState) est;
 	    	
+	    	
 	    
 	    	int amongEnergy = airshipState.getAgentEnergy();
 	    	List<String> possibleMovements = amongState.getPosibleMovements();
-
+	    	List<Integer> roomValues = amongState.getAirshipRoomValues(GlobalVars.TEN);
+	    	
 	    	if(possibleMovements != null && amongEnergy > 0)
 	    	{
 	    		int index = possibleMovements.indexOf(GlobalVars.TEN);
 	    		
 	    		if (index >= 0) {
 	    			amongState.setPosition(GlobalVars.TEN);
+	    			if (roomValues.get(0) == -1 && roomValues.get(1) == -1)
+	                {
+	                	amongState.setRoomValues(GlobalVars.TEN, List.of(0,0));
+	                }
 	    			amongState.setEnergy(amongEnergy-1);
 	    			airshipState.setAgentPosition(GlobalVars.TEN);
 	    			airshipState.setAgentEnergy(amongEnergy - 1);
@@ -62,13 +73,13 @@ public class goto10 extends SearchAction{
 
     @Override
     public String toString() {
-        return "GoTo2";
+    	return "ME MUEVO A 10 \n=================================\n=================================\n\n";
     }
 
     @Override
     public Double getCost() {
     	
-    	return 1.0;
+    	return 0.0;
     }
     
 }

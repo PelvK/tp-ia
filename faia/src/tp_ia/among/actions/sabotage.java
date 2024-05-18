@@ -51,6 +51,7 @@ public class sabotage extends SearchAction {
         	
         	airshipState.setRoomValues(position, roomList);
         	airshipState.setAgentEnergy(airshipState.getAgentEnergy() - 1);
+        	airshipState.setTotalTasks(airshipState.getTotalTasks() - 1);
            
         	amongState.setRoomValues(position, roomList);
         	amongState.setEnergy(amongState.getEnergy() - 1);
@@ -63,11 +64,11 @@ public class sabotage extends SearchAction {
 
     @Override
     public Double getCost() {
-        return 1.0;
+        return 0.0;
     }
     
     @Override
     public String toString() {
-        return "Sabotage";
+    	return "SABOTEO\n=================================\n=================================\n\n";
     }
 }

@@ -16,14 +16,19 @@ public class goto8 extends SearchAction{
 	        int energy = state.getEnergy();
 	        
 	        List<String> possibleMovements = state.getPosibleMovements();
+	        List<Integer> roomValues = state.getAirshipRoomValues(GlobalVars.EIGHT);
 	        
 	        if (possibleMovements != null && energy > 0) {
 	            int index = possibleMovements.indexOf(GlobalVars.EIGHT); 
 	            
 	            if (index >= 0) {
 	                state.setPosition(GlobalVars.EIGHT);
-	                state.setEnergy(energy-1);
 	                
+	                if (roomValues.get(0) == -1 && roomValues.get(1) == -1)
+	                {
+	                	state.setRoomValues(GlobalVars.EIGHT, List.of(0,0));
+	                }
+	                state.setEnergy(energy-1);   
 	                return state;
 	            }
 	        }
@@ -41,7 +46,9 @@ public class goto8 extends SearchAction{
 	    	
 	    
 	    	int amongEnergy = airshipState.getAgentEnergy();
+	    	
 	    	List<String> possibleMovements = amongState.getPosibleMovements();
+	    	List<Integer> roomValues = amongState.getAirshipRoomValues(GlobalVars.EIGHT);
 
 	    	if(possibleMovements != null && amongEnergy > 0)
 	    	{
@@ -49,6 +56,10 @@ public class goto8 extends SearchAction{
 	    		
 	    		if (index >= 0) {
 	    			amongState.setPosition(GlobalVars.EIGHT);
+	    			if (roomValues.get(0) == -1 && roomValues.get(1) == -1)
+	                {
+	                	amongState.setRoomValues(GlobalVars.EIGHT, List.of(0,0));
+	                }
 	    			amongState.setEnergy(amongEnergy-1);
 	    			airshipState.setAgentPosition(GlobalVars.EIGHT);
 	    			airshipState.setAgentEnergy(amongEnergy - 1);
@@ -62,12 +73,12 @@ public class goto8 extends SearchAction{
 
     @Override
     public String toString() {
-        return "GoTo2";
+    	return "ME VOY AL 8\n=================================\n=================================\n\n";
     }
 
     @Override
     public Double getCost() {
-    	return 1.0;
+    	return 0.0;
     }
     
 }

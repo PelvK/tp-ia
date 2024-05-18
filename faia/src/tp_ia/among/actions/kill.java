@@ -45,12 +45,13 @@ public class kill extends SearchAction {
         
         List<Integer> roomList = new ArrayList<>(room);
         
-        if ((int)room.toArray()[0] > 0 && airshipState.getAgentEnergy() > 0) {
+        if (roomList.get(0) > 0 && airshipState.getAgentEnergy() > 0) {
         	
         	roomList.set(0, roomList.get(0) - 1);
         	
         	airshipState.setRoomValues(position, roomList);
         	airshipState.setAgentEnergy(airshipState.getAgentEnergy() - 1);
+        	airshipState.setTotalCrewMembers(airshipState.getTotalCrewMembers() - 1);
         	
         	amongState.setRoomValues(position, roomList);
         	amongState.setEnergy(amongState.getEnergy() - 1);
@@ -63,11 +64,11 @@ public class kill extends SearchAction {
 
     @Override
     public Double getCost() {
-        return 1.0;
+        return 0.0;
     }
     
     @Override
     public String toString() {
-        return "Kill";
+    	return "ELIMINO\n=================================\n=================================\n\n";
     }
 }

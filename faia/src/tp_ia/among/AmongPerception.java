@@ -56,7 +56,7 @@ public class AmongPerception extends Perception {
     	
     	StringBuffer str = new StringBuffer();
 
-        str.append("\n=====================\n");
+        str.append("\n");
         
         
 	for (Entry<String, List<Integer>> entry : adjacencySensor.entrySet()) {

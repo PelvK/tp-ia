@@ -1,5 +1,6 @@
 package tp_ia.among;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +15,7 @@ public class AmongAgentState extends SearchBasedAgentState {
 
 	String position;
 	private int energy;
-	private int remainingCrewMembers;
+	private int remainingCrewmembers;
 	private int remainingTasks;
     private HashMap<String, List<Integer>> airship;
 	private HashMap<String, List<String>> movements;
@@ -26,7 +27,7 @@ public class AmongAgentState extends SearchBasedAgentState {
         this.position = initial_position;
         this.energy = inital_energy;
         this.movements = mov;
-        this.remainingCrewMembers = crewmembers;
+        this.remainingCrewmembers = crewmembers;
         this.remainingTasks = sabotage_tasks;
     }
     
@@ -40,11 +41,12 @@ public class AmongAgentState extends SearchBasedAgentState {
     @Override
     public void initState() {
     	
-    	airship = GlobalVars.airships(1);
+    	airship = GlobalVars.airships(3);
+    	//airship = GlobalVars.emptyAirship(3);
     	movements = GlobalVars.successors();
         position = GlobalVars.initialNode;
         energy = GlobalVars.initalAmongEnergy;
-        remainingCrewMembers = GlobalVars.totalCrewmembers;
+        remainingCrewmembers = GlobalVars.totalCrewmembers;
         remainingTasks = GlobalVars.totalSabotageTask;        
         
     }
@@ -97,13 +99,13 @@ public class AmongAgentState extends SearchBasedAgentState {
 
         AmongAgentState compare = (AmongAgentState) obj;
 
-        boolean sameEnergy = compare.getEnergy() == this.energy;
+        //boolean sameEnergy = compare.getEnergy() == this.energy;
         boolean sameRoom = compare.getPosition() == this.position;
-        boolean sameRemainingCrewmembers = compare.getRemainingCrewMembers() == this.remainingCrewMembers;
+        boolean sameRemainingCrewmembers = compare.getRemainingCrewMembers() == this.remainingCrewmembers;
         boolean sameRemainingTask = compare.getRemainingTasks() == this.remainingTasks;
         boolean sameAirship = compare.getAirship().equals(this.airship);
 
-        return sameEnergy && sameRoom && sameRemainingCrewmembers && sameRemainingTask && sameAirship;
+        return /*sameEnergy &&*/ sameRoom && sameRemainingCrewmembers && sameRemainingTask && sameAirship;
     }
     
     
@@ -127,7 +129,7 @@ public class AmongAgentState extends SearchBasedAgentState {
     }
 
     public int getRemainingCrewMembers() {
-        return remainingCrewMembers;
+        return remainingCrewmembers;
     }
 
     public int getRemainingTasks() {
@@ -150,7 +152,7 @@ public class AmongAgentState extends SearchBasedAgentState {
     }
 
     public void setRemainingCrewMembers(int crewMembers) {
-        this.remainingCrewMembers = crewMembers;
+        this.remainingCrewmembers = crewMembers;
     }
 
     public void setRemainingTasks(int tasks) {
@@ -168,11 +170,54 @@ public class AmongAgentState extends SearchBasedAgentState {
     }
 
     public Boolean isNoMoreCrewMembers() {
-    	return remainingCrewMembers == 0;
+    	
+    	/*
+    	for (Entry<String, List<Integer>> entry : airship.entrySet()) {
+    		
+    	    String key = entry.getKey();
+    	    List<Integer> value = new ArrayList<>(airship.get(key));
+        	
+    	    if (value.get(0) != 0)
+				return false;
+        }
+        */
+    	
+    	return remainingCrewmembers == 0;
+    	 	
+    	//return true;
     }
     
     public Boolean allSabotagedTasks() {
+    	
+    	/*
+    	for (Entry<String, List<Integer>> entry : airship.entrySet()) {
+    		
+    	    String key = entry.getKey();
+    	    List<Integer> value = new ArrayList<>(airship.get(key));
+        	
+    	    if (value.get(1) != 0)
+				return false;
+        }
+        */
     	return remainingTasks == 0;
+  
+    }
+    
+    public Boolean knowAllTheAirship() {
+    	
+    	for (Entry<String, List<Integer>> entry : airship.entrySet()) {
+    		
+    	    String key = entry.getKey();
+    	    List<Integer> value = new ArrayList<>(airship.get(key));
+        	
+    	    if (value.get(0) == -1)
+				return false;
+			
+			if (value.get(1) == -1)
+				return false;
+        }
+    	
+    	return true;
     }
     
     @Override
@@ -181,7 +226,7 @@ public class AmongAgentState extends SearchBasedAgentState {
     	StringBuffer str = new StringBuffer();
         str.append("\n=============\n--Posicion: " + position + " \n");
         str.append("--Tareas Restantes: " + remainingTasks + " \n");
-        str.append("--Tipulantes Restantes: "+remainingCrewMembers+"\n");
+        str.append("--Tipulantes Restantes: "+remainingCrewmembers+"\n");
         str.append("--Energia: " + energy + " \n");
         str.append("--Conocimiento del Mapa:\n");
         
@@ -190,26 +235,20 @@ public class AmongAgentState extends SearchBasedAgentState {
     	for (Entry<String, List<Integer>> entry : airship.entrySet()) {
     		
     	    String key = entry.getKey();
-    	    Collection<Integer> value = airship.get(key);
+    	    List<Integer> value = new ArrayList<>(airship.get(key));
     	   
     	    str.append("[" +  key + "\t");
         	
-    	    if (value != null)
-    	    {
-    	    	if (value.toArray()[0] == null)
-            		str.append("-,");
-            	else
-            		str.append(value.toArray()[0] + ",");
-            	
-            	if (value.toArray()[1] == null)
-            		str.append("-]\n");
-            	else
-            		str.append(value.toArray()[1] + "]");
-    	    }
-    	    else
-    	    {
-    	    	str.append("-,-]");
-    	    }
+    	    if (value.get(0) == -1)
+				str.append("-,");
+			else
+				str.append(value.get(0) + ",");
+			
+			if (value.get(1) == -1)
+				str.append("-]");
+			else
+				str.append(value.get(1) + "]");
+			
     	    str.append("\n");
         }
     	
