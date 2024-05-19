@@ -1,6 +1,7 @@
 package tp_ia.among.actions;
 
 
+import java.util.HashMap;
 import java.util.List;
 import frsf.cidisi.faia.agent.search.SearchAction;
 import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
@@ -64,6 +65,12 @@ public class goto2 extends SearchAction{
 	    			airshipState.setAgentPosition(GlobalVars.TWO);
 	    			airshipState.setAgentEnergy(amongEnergy - 1);
 	    			
+	    			//Para actualizar el movimiento de los tripulantes//
+	    			HashMap<String, List<Integer>> airship = airshipState.getAirship();
+	    			
+	    			airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airship));
+	                GlobalVars.extrasensoryCycle --;
+
 	    			return airshipState;
 	    		}
 	    		

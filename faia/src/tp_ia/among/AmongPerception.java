@@ -3,6 +3,7 @@ package tp_ia.among;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import frsf.cidisi.faia.agent.Agent;
 import frsf.cidisi.faia.agent.Perception;
@@ -15,6 +16,8 @@ public class AmongPerception extends Perception {
 
   
     private HashMap<String, List<Integer>> adjacencySensor;
+    private HashMap<String, List<Integer>> extrasensorySensor;
+    
 
     
     
@@ -36,8 +39,13 @@ public class AmongPerception extends Perception {
         AmongEnvironment amongEnvironment = (AmongEnvironment) environment;
         AmongEnvironmentState environmentState = amongEnvironment.getEnvironmentState();
         
-        this.setAdjacencySensor(amongEnvironment.getAdjacency(environmentState.getAgentPosition()));
-    
+        if (GlobalVars.extrasensoryCycle == 0){
+        	GlobalVars.extrasensoryCycle = getContExtrasensory();
+        	this.setAdjacencySensor(amongEnvironment.getExtrasensory());
+        }
+        else {
+        	this.setAdjacencySensor(amongEnvironment.getAdjacency(environmentState.getAgentPosition()));
+        }
     }
 
 
@@ -49,8 +57,19 @@ public class AmongPerception extends Perception {
         this.adjacencySensor = adjacencySensor;
     }
 
+    public HashMap<String, List<Integer>> getExtrasensorySensor()
+    {
+    	return extrasensorySensor;
+    }
+    
+    public void setExtrasensorySensor(HashMap<String, List<Integer>> extrasensorySensor) {
+    	this.extrasensorySensor = extrasensorySensor;
+    }
 
-
+    public static int getContExtrasensory() {
+    	Random random = new Random();
+    	return random.nextInt(3) + 3;
+    }
     @Override
     public String toString() {
     	

@@ -4,6 +4,7 @@ package tp_ia.among;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 public class GlobalVars {
 	
@@ -26,6 +27,8 @@ public class GlobalVars {
     public static int totalCrewmembers = 3;
     public static int totalSabotageTask = 3;
     public static int initalAmongEnergy = 50;
+
+    public static int extrasensoryCycle = 0;
     
     public static List<String> successorNodesONE = List.of(TWO, THREE, FOUR);
     public static List<String> successorNodesTWO = List.of(ONE, THREE, FOUR, FIVE, SEVEN);
@@ -41,6 +44,9 @@ public class GlobalVars {
     public static List<String> successorNodesTWELVE = List.of(THIRTEEN, NINE, FOURTEEN, EIGHT, ELEVEN);
     public static List<String> successorNodesTHIRTEEN = List.of(NINE, TWELVE, FOURTEEN);
     public static List<String> successorNodesFOURTEEN = List.of(NINE, THIRTEEN, TWELVE);
+    
+    private static HashMap<String, List<String>> movements = movements(0);
+    
     
     /*
     String[][] positions = new String[][]{
@@ -158,6 +164,50 @@ public class GlobalVars {
     	return false;
     }
     
+    
+    public static HashMap<String, List<Integer>> updateCrewmatesPositions(HashMap<String, List<Integer>> airship) {
+    	
+    	
+    		HashMap<String, List<Integer>> newAirship = emptyAirship(4);
+    		
+    		for (Entry<String, List<Integer>> entry : airship.entrySet()) {
+    		
+    	    String key = entry.getKey();
+    	    List<Integer> value = airship.get(key);
+    	    
+    	    int crewmates = value.get(0);
+    	    
+    	    if (crewmates > 0)
+    	    {
+    	    	List<String> connections = movements.get(key);
+    	    	int cantAdjacency = connections.size();
+    	    	
+    	    	for (int i = 0; i<crewmates; i++)
+        	    {
+        	    	int moveProbability = getRandom(1,3);
+        	    	
+        	    	if (moveProbability == 1)
+        	    	{
+        	    		int roomProbability = getRandom(0, cantAdjacency-1);
+        	    		String selectedRoom = connections.get(roomProbability);
+        	    		
+        	    		List<Integer> selectedRoomValues = airship.get(selectedRoom);
+        	    		newAirship.put(selectedRoom, List.of(selectedRoomValues.get(0) + 1, selectedRoomValues.get(1)));
+        	    	}
+        	    	else
+        	    	{
+        	    		newAirship.put(key, value);
+        	    	}
+        	    }
+    	    }
+    	    
+ 
+    		}
+    	
+    	
+    	return newAirship;
+    }
+    
     public static HashMap<String, List<Integer>> airships(int type){
     	
     	HashMap<String, List<Integer>> airship = new HashMap<>();
@@ -236,4 +286,10 @@ public class GlobalVars {
     	}
     	*/
     }
+    	
+    	private static int getRandom(int p, int t)
+        {
+        	return (int)(Math.random()*(t-p+1)+p);
+        	
+        }
 }

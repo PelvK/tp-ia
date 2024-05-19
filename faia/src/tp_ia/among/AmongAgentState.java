@@ -41,8 +41,8 @@ public class AmongAgentState extends SearchBasedAgentState {
     @Override
     public void initState() {
     	
-    	airship = GlobalVars.airships(3);
-    	//airship = GlobalVars.emptyAirship(3);
+    	//airship = GlobalVars.airships(3);
+    	airship = GlobalVars.emptyAirship(3);
     	movements = GlobalVars.successors();
         position = GlobalVars.initialNode;
         energy = GlobalVars.initalAmongEnergy;
@@ -78,8 +78,14 @@ public class AmongAgentState extends SearchBasedAgentState {
     public void updateState(Perception p) {
     	
     	AmongPerception amongPerception = (AmongPerception) p;
+    	HashMap<String, List<Integer>> aux = new HashMap<String, List<Integer>>();
     	
-    	HashMap<String, List<Integer>> aux = amongPerception.getAdjacencySensor();
+    	if(GlobalVars.extrasensoryCycle == 0) {
+    		aux = amongPerception.getExtrasensorySensor();
+    	}
+    	else {
+    		aux = amongPerception.getAdjacencySensor();
+    	}
     	
     	for (Entry<String, List<Integer>> entry : aux.entrySet()) {
    
@@ -169,6 +175,9 @@ public class AmongAgentState extends SearchBasedAgentState {
         return this.getEnergy() >= 0;
     }
 
+    public Boolean isInTheFinal() {
+    	return position == GlobalVars.FOURTEEN;
+    }
     public Boolean isNoMoreCrewMembers() {
     	
     	/*
@@ -254,6 +263,10 @@ public class AmongAgentState extends SearchBasedAgentState {
     	
         return str.toString();
     }
+
+
+
+	
   
 
 }

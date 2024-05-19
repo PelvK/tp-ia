@@ -30,6 +30,7 @@ public class goto14 extends SearchAction{
 	                }
 	                state.setEnergy(energy-1);
 	                
+	                
 	                return state;
 	            }
 	        }
@@ -64,6 +65,10 @@ public class goto14 extends SearchAction{
 	    			airshipState.setAgentPosition(GlobalVars.FOURTEEN);
 	    			airshipState.setAgentEnergy(amongEnergy - 1);
 	    			
+	    			//Para actualizar el movimiento de los tripulantes//
+	    			airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airshipState.getAirship()));
+	                GlobalVars.extrasensoryCycle --;
+
 	    			return airshipState;
 	    		}
 	    		

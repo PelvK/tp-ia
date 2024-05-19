@@ -64,6 +64,10 @@ public class goto8 extends SearchAction{
 	    			airshipState.setAgentPosition(GlobalVars.EIGHT);
 	    			airshipState.setAgentEnergy(amongEnergy - 1);
 	    			
+	    			//Para actualizar el movimiento de los tripulantes//
+	    			airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airshipState.getAirship()));
+	                GlobalVars.extrasensoryCycle --;
+
 	    			return airshipState;
 	    		}
 	    		

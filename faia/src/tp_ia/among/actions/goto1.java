@@ -28,6 +28,7 @@ public class goto1 extends SearchAction{
                 	state.setRoomValues(GlobalVars.ONE, List.of(0,0));
                 }
                 state.setEnergy(energy-1);
+                GlobalVars.extrasensoryCycle --;
                 
                 return state;
             }
@@ -59,6 +60,9 @@ public class goto1 extends SearchAction{
     			amongState.setEnergy(amongEnergy-1);
     			airshipState.setAgentPosition(GlobalVars.ONE);
     			airshipState.setAgentEnergy(amongEnergy - 1);
+    			
+    			//Para actualizar el movimiento de los tripulantes//
+    			airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airshipState.getAirship()));
     			
     			return airshipState;
     		}

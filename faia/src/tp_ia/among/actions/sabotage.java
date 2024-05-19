@@ -57,6 +57,10 @@ public class sabotage extends SearchAction {
         	amongState.setEnergy(amongState.getEnergy() - 1);
         	amongState.setRemainingTasks(amongState.getRemainingTasks() - 1);
 
+        	//Para actualizar el movimiento de los tripulantes//
+			airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airshipState.getAirship()));
+            GlobalVars.extrasensoryCycle --;
+
             return airshipState;
         }
         return null;
