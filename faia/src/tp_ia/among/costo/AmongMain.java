@@ -5,6 +5,9 @@ import frsf.cidisi.faia.simulator.SearchBasedAgentSimulator;
 
 public class AmongMain {
 	
+		private static long startTime;
+		private static long endTime;
+	
 	public static void main(String[] args) throws PrologConnectorException {
 	
 		AmongAgent amongAgent = new AmongAgent();
@@ -12,7 +15,10 @@ public class AmongMain {
 		SearchBasedAgentSimulator simulator = new SearchBasedAgentSimulator(amongEnvironment, amongAgent);
 		
 		printMemoryUsage();
+		startTime = System.currentTimeMillis();
 		simulator.start();
+		endTime = System.currentTimeMillis();
+		printTotalTime();
 	}
 	
 	private static void printMemoryUsage() {
@@ -27,6 +33,17 @@ public class AmongMain {
         System.out.println("Used Memory: " + (usedMemory / 1024 / 1024) + " MB");
         System.out.println("Max Memory: " + (maxMemory / 1024 / 1024) + " MB");
     }
+	
+	private static void printTotalTime() {
+		long totalTime = endTime - startTime;
+		long totalSeconds = totalTime / 1000;
+        long minutes = totalSeconds / 60;
+        long seconds = totalSeconds % 60;
+        long milliseconds = totalTime % 1000;
+
+        System.out.println("Tiempo total de ejecución: " + minutes + " minutos, " + seconds + " segundos y " + milliseconds + " milisegundos.");
+
+	}
 	
 	
 }

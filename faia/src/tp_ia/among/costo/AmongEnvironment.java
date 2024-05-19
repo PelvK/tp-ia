@@ -26,7 +26,14 @@ public class AmongEnvironment extends Environment {
         
     	AmongPerception perception = new AmongPerception();
     	
-    	perception.setAdjacencySensor(this.getAdjacency(this.getEnvironmentState().getAgentPosition()));
+    	if(GlobalVars.extrasensoryCycle == 0) {
+        	perception.setExtrasensorySensor(this.getExtrasensory());
+
+    	}
+    	else {
+        	perception.setAdjacencySensor(this.getAdjacency(this.getEnvironmentState().getAgentPosition()));
+
+    	}
     	
     	return perception;
     }
@@ -39,6 +46,10 @@ public class AmongEnvironment extends Environment {
     public HashMap<String, List<Integer>> getAdjacency(String position) {
     	
     	return ((AmongEnvironmentState) this.environmentState).getAdjacency(position);
+    }
+    
+    public HashMap<String, List<Integer>> getExtrasensory() {
+    	return ((AmongEnvironmentState) this.environmentState).getExtrasensory();
     }
     
     @Override

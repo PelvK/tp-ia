@@ -144,6 +144,9 @@ public class AmongEnvironmentState extends EnvironmentState {
     
     }
     
+    public HashMap<String, List<Integer>> getExtrasensory(){
+    	return airship;
+    }
     
     
     @Override

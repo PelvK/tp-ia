@@ -2,7 +2,6 @@ package tp_ia.among;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Random;
 
 import frsf.cidisi.faia.agent.Agent;
@@ -41,7 +40,7 @@ public class AmongPerception extends Perception {
         
         if (GlobalVars.extrasensoryCycle == 0){
         	GlobalVars.extrasensoryCycle = getContExtrasensory();
-        	this.setAdjacencySensor(amongEnvironment.getExtrasensory());
+        	this.setExtrasensorySensor(amongEnvironment.getExtrasensory());
         }
         else {
         	this.setAdjacencySensor(amongEnvironment.getAdjacency(environmentState.getAgentPosition()));
@@ -77,28 +76,55 @@ public class AmongPerception extends Perception {
 
         str.append("\n");
         
-        
-	for (Entry<String, List<Integer>> entry : adjacencySensor.entrySet()) {
-    		
-    	    String key = entry.getKey();
-    	    List<Integer> value = adjacencySensor.get(key);
-    	    str.append("[" +  key + "\t");
+        /*
+        if(GlobalVars.extrasensoryCycle == 0) {
         	
-    	    if (value != null)
-    	    {
-    	    	if (value.get(0) == null)
-            		str.append("-,");
-            	else
-            		str.append(value.get(0) + ",");
+        	for (Entry<String, List<Integer>> entry : extrasensorySensor.entrySet()) {
+        		
+        	    String key = entry.getKey();
+        	    List<Integer> value = extrasensorySensor.get(key);
+        	    str.append("[" +  key + "\t");
             	
-            	if (value.get(1) == null)
-            		str.append("-]\n");
-            	else
-            		str.append(value.get(1) + "]\n");
-    	    }
-        	
+        	    if (value != null)
+        	    {
+        	    	if (value.get(0) == null)
+                		str.append("-,");
+                	else
+                		str.append(value.get(0) + ",");
+                	
+                	if (value.get(1) == null)
+                		str.append("-]\n");
+                	else
+                		str.append(value.get(1) + "]\n");
+        	    }
+            	
+            }
         }
-    	
+        else {
+for (Entry<String, List<Integer>> entry : adjacencySensor.entrySet()) {
+        		
+        	    String key = entry.getKey();
+        	    List<Integer> value = adjacencySensor.get(key);
+        	    str.append("[" +  key + "\t");
+            	
+        	    if (value != null)
+        	    {
+        	    	if (value.get(0) == null)
+                		str.append("-,");
+                	else
+                		str.append(value.get(0) + ",");
+                	
+                	if (value.get(1) == null)
+                		str.append("-]\n");
+                	else
+                		str.append(value.get(1) + "]\n");
+        	    }
+            	
+            }
+        }
+        
+	
+    	*/
     
         return str.toString();
         

@@ -1,7 +1,6 @@
 package tp_ia.among.costo;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -42,8 +41,8 @@ public class AmongAgentState extends SearchBasedAgentState {
     @Override
     public void initState() {
     	
-    	airship = GlobalVars.airships(3);
-    	//airship = GlobalVars.emptyAirship(3);
+    	//airship = GlobalVars.airships(3);
+    	airship = GlobalVars.emptyAirship(3);
     	movements = GlobalVars.successors();
         position = GlobalVars.initialNode;
         energy = GlobalVars.initalAmongEnergy;
@@ -79,8 +78,14 @@ public class AmongAgentState extends SearchBasedAgentState {
     public void updateState(Perception p) {
     	
     	AmongPerception amongPerception = (AmongPerception) p;
+    	HashMap<String, List<Integer>> aux = new HashMap<String, List<Integer>>();
     	
-    	HashMap<String, List<Integer>> aux = amongPerception.getAdjacencySensor();
+    	if(GlobalVars.extrasensoryCycle == 0) {
+    		aux = amongPerception.getExtrasensorySensor();
+    	}
+    	else {
+    		aux = amongPerception.getAdjacencySensor();
+    	}
     	
     	for (Entry<String, List<Integer>> entry : aux.entrySet()) {
    
@@ -170,11 +175,9 @@ public class AmongAgentState extends SearchBasedAgentState {
         return this.getEnergy() >= 0;
     }
 
-    /*
     public Boolean isInTheFinal() {
     	return position == GlobalVars.FOURTEEN;
     }
-    */
     
     public double getCosto() {
         return this.costo;
@@ -244,10 +247,10 @@ public class AmongAgentState extends SearchBasedAgentState {
         str.append("--Tareas Restantes: " + remainingTasks + " \n");
         str.append("--Tipulantes Restantes: "+remainingCrewmembers+"\n");
         str.append("--Energia: " + energy + " \n");
-        str.append("--Conocimiento del Mapa:\n");
+        str.append("--Conocimiento del Mapa: (POR EL MOMENTO MIREMOS EL AMBIENTE)\n");
         
         
-    	
+    	/*
     	for (Entry<String, List<Integer>> entry : airship.entrySet()) {
     		
     	    String key = entry.getKey();
@@ -267,9 +270,13 @@ public class AmongAgentState extends SearchBasedAgentState {
 			
     	    str.append("\n");
         }
-    	
+    	*/
         return str.toString();
     }
+
+
+
+	
   
 
 }
