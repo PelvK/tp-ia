@@ -237,10 +237,10 @@ public class AmongAgentState extends SearchBasedAgentState {
         str.append("--Tareas Restantes: " + remainingTasks + " \n");
         str.append("--Tipulantes Restantes: "+remainingCrewmembers+"\n");
         str.append("--Energia: " + energy + " \n");
-        str.append("--Conocimiento del Mapa: (POR EL MOMENTO MIREMOS EL AMBIENTE)\n");
+        str.append("--Conocimiento del Mapa: \n");
         
         
-    	/*
+    	
     	for (Entry<String, List<Integer>> entry : airship.entrySet()) {
     		
     	    String key = entry.getKey();
@@ -260,7 +260,7 @@ public class AmongAgentState extends SearchBasedAgentState {
 			
     	    str.append("\n");
         }
-    	*/
+    	
         return str.toString();
     }
 

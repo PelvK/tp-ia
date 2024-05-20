@@ -77,7 +77,7 @@ public class AmongPerception extends Perception {
 
         str.append("\n");
         
-        /*
+        
         if(GlobalVars.extrasensoryCycle == 0) {
         	
         	for (Entry<String, List<Integer>> entry : extrasensorySensor.entrySet()) {
@@ -125,7 +125,7 @@ for (Entry<String, List<Integer>> entry : adjacencySensor.entrySet()) {
         }
         
 	
-    	*/
+    	
     
         return str.toString();
         

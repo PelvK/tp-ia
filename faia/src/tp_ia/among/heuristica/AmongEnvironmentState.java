@@ -37,7 +37,7 @@ public class AmongEnvironmentState extends EnvironmentState {
 		airship = new HashMap<String, List<Integer>>();
 		movements = new HashMap<String, List<String>>();
 		
-        this.initAirship(3);
+        this.initAirship(1);
         
     }
 

@@ -66,11 +66,11 @@ public class goto2 extends SearchAction{
 	    			airshipState.setAgentPosition(GlobalVars.TWO);
 	    			airshipState.setAgentEnergy(amongEnergy - 1);
 	    			
-	    			//Para actualizar el movimiento de los tripulantes//
-	    			HashMap<String, List<Integer>> airship = airshipState.getAirship();
 	    			
-	    			airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airship));
-	    			
+	    			if (GlobalVars.dinamycCrewmaters) {
+	    				airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airshipState.getAirship()));
+	    			}
+	    			GlobalVars.extrasensoryCycle --;
 	    			return airshipState;
 	    		}
 	    		

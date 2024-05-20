@@ -6,6 +6,7 @@ import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
 import frsf.cidisi.faia.state.AgentState;
 import frsf.cidisi.faia.state.EnvironmentState;
 import tp_ia.among.costo.*;
+import tp_ia.among.heuristica.GlobalVars;
 
 public class goto8 extends SearchAction{
 	
@@ -65,8 +66,9 @@ public class goto8 extends SearchAction{
 	    			airshipState.setAgentPosition(GlobalVars.EIGHT);
 	    			airshipState.setAgentEnergy(amongEnergy - 1);
 	    			
-	    			//Para actualizar el movimiento de los tripulantes//
-	    			airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airshipState.getAirship()));
+	    			if (GlobalVars.dinamycCrewmaters) {
+	    				airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airshipState.getAirship()));
+	    			}
 	    			
 	    			return airshipState;
 	    		}

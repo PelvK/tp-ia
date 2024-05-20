@@ -1,6 +1,7 @@
 package tp_ia.among.heuristica.actions;
 
 
+import java.util.HashMap;
 import java.util.List;
 import frsf.cidisi.faia.agent.search.SearchAction;
 import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
@@ -49,7 +50,7 @@ public class goto1 extends SearchAction{
     
     	int amongEnergy = airshipState.getAgentEnergy();
     	List<String> possibleMovements = amongState.getPosibleMovements();
-    	List<Integer> roomValues = amongState.getAirshipRoomValues(GlobalVars.ONE);
+    	//List<Integer> roomValues = amongState.getAirshipRoomValues(GlobalVars.ONE);
 
     	if(possibleMovements != null && amongEnergy > 0)
     	{
@@ -62,9 +63,11 @@ public class goto1 extends SearchAction{
     			airshipState.setAgentPosition(GlobalVars.ONE);
     			airshipState.setAgentEnergy(amongEnergy - 1);
     			
-    			//Para actualizar el movimiento de los tripulantes//
-    			airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airshipState.getAirship()));
-    			
+    			if (GlobalVars.dinamycCrewmaters) {
+    				airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airshipState.getAirship()));
+    			}
+    				
+    			GlobalVars.extrasensoryCycle --;
     			return airshipState;
     		}
     		

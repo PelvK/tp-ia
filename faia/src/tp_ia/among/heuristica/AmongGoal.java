@@ -13,7 +13,7 @@ public class AmongGoal extends GoalTest {
 		if (((AmongAgentState)agentState).isNoMoreCrewMembers() && 
 				((AmongAgentState)agentState).allSabotagedTasks() &&
 					((AmongAgentState)agentState).isAlive() /*&&
-						((AmongAgentState)agentState).knowAllTheAirship()*/){
+					((AmongAgentState)agentState).knowAllTheAirship()*/){
 			return true;
 		}
 		 return false;

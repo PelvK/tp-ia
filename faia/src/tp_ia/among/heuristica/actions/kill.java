@@ -2,6 +2,7 @@ package tp_ia.among.heuristica.actions;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import frsf.cidisi.faia.agent.search.SearchAction;
@@ -58,9 +59,10 @@ public class kill extends SearchAction {
         	amongState.setEnergy(amongState.getEnergy() - 1);
         	amongState.setRemainingCrewMembers(amongState.getRemainingCrewMembers() - 1);
    
-        	//Para actualizar el movimiento de los tripulantes//
-			airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airshipState.getAirship()));
-			
+        	if (GlobalVars.dinamycCrewmaters) {
+				airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airshipState.getAirship()));
+			}
+			GlobalVars.extrasensoryCycle --;
             return airshipState;
         }
         return null;

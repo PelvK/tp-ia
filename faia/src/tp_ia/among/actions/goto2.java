@@ -8,6 +8,7 @@ import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
 import frsf.cidisi.faia.state.AgentState;
 import frsf.cidisi.faia.state.EnvironmentState;
 import tp_ia.among.*;
+import tp_ia.among.heuristica.GlobalVars;
 
 public class goto2 extends SearchAction{
 	
@@ -65,10 +66,10 @@ public class goto2 extends SearchAction{
 	    			airshipState.setAgentPosition(GlobalVars.TWO);
 	    			airshipState.setAgentEnergy(amongEnergy - 1);
 	    			
-	    			//Para actualizar el movimiento de los tripulantes//
-	    			HashMap<String, List<Integer>> airship = airshipState.getAirship();
+	    			if (GlobalVars.dinamycCrewmaters) {
+	    				airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airshipState.getAirship()));
+	    			}
 	    			
-	    			airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airship));
 	                GlobalVars.extrasensoryCycle --;
 
 	    			return airshipState;

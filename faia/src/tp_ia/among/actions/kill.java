@@ -9,6 +9,7 @@ import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
 import frsf.cidisi.faia.state.AgentState;
 import frsf.cidisi.faia.state.EnvironmentState;
 import tp_ia.among.*;
+import tp_ia.among.heuristica.GlobalVars;
 
 public class kill extends SearchAction {
 	
@@ -57,8 +58,9 @@ public class kill extends SearchAction {
         	amongState.setEnergy(amongState.getEnergy() - 1);
         	amongState.setRemainingCrewMembers(amongState.getRemainingCrewMembers() - 1);
    
-        	//Para actualizar el movimiento de los tripulantes//
-			airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airshipState.getAirship()));
+        	if (GlobalVars.dinamycCrewmaters) {
+				airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airshipState.getAirship()));
+			}
             GlobalVars.extrasensoryCycle --;
 
             return airshipState;
