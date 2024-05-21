@@ -14,9 +14,12 @@ public class AmongGoal extends GoalTest {
 				((AmongAgentState)agentState).allSabotagedTasks() &&
 					((AmongAgentState)agentState).isAlive() /*&&
 						((AmongAgentState)agentState).knowAllTheAirship()*/){
+			
+			
 			return true;
 		}
-		 return false;
+		
+		return false;
 		
 		
 		//OBJETIVO PARCIAL

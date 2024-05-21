@@ -7,7 +7,8 @@ import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
 import frsf.cidisi.faia.state.AgentState;
 import frsf.cidisi.faia.state.EnvironmentState;
 import tp_ia.among.*;
-import tp_ia.among.heuristica.GlobalVars;
+import tp_ia.among.GlobalVars.SimulationMethod;
+import ui.*;
 
 public class goto1 extends SearchAction{
     @Override
@@ -24,13 +25,12 @@ public class goto1 extends SearchAction{
             
             if (index >= 0) {
                 state.setPosition(GlobalVars.ONE);
-                if (roomValues.get(0) == -1 && roomValues.get(1) == -1)
-                {
+                
+                if (roomValues.get(0) == -1 && roomValues.get(1) == -1) {
                 	state.setRoomValues(GlobalVars.ONE, List.of(0,0));
                 }
                 state.setEnergy(energy-1);
                 GlobalVars.extrasensoryCycle --;
-                
                 return state;
             }
         }
@@ -41,15 +41,11 @@ public class goto1 extends SearchAction{
     @Override
     public EnvironmentState execute(AgentState ast, EnvironmentState est) {
     	
-    	
-    	
     	AmongAgentState amongState = (AmongAgentState) ast;
     	AmongEnvironmentState airshipState = (AmongEnvironmentState) est;
-    	
-    
+
     	int amongEnergy = airshipState.getAgentEnergy();
     	List<String> possibleMovements = amongState.getPosibleMovements();
-    	List<Integer> roomValues = amongState.getAirshipRoomValues(GlobalVars.ONE);
 
     	if(possibleMovements != null && amongEnergy > 0)
     	{
@@ -62,11 +58,16 @@ public class goto1 extends SearchAction{
     			airshipState.setAgentPosition(GlobalVars.ONE);
     			airshipState.setAgentEnergy(amongEnergy - 1);
     			
-    			if (GlobalVars.dinamycCrewmaters) {
+    			if (GlobalVars.dynamicCrewmates) {
     				airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airshipState.getAirship()));
     			}
     			
+    			if(GlobalVars.withInterface) {
+    				UpdateManager.getInstance().update(new UpdateStep(amongState, airshipState, "goto1"), GlobalVars.timeStep);
+    			}
+    			
     			GlobalVars.extrasensoryCycle --;
+    			
     			return airshipState;
     		}
     		
@@ -82,7 +83,13 @@ public class goto1 extends SearchAction{
 
     @Override
     public Double getCost() {
-    	return 0.0;
+    	
+    	if (GlobalVars.simulationMethod == SimulationMethod.METHOD_1){
+    		return 0.0;
+    	}
+    	else {
+    		return 7.0;
+    	}
     }
     
 }

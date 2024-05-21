@@ -15,29 +15,20 @@ public class AmongEnvironmentState extends EnvironmentState {
     private int totalCrewMembers;
     private int totalTasks;
     
-
-
     public AmongEnvironmentState() {
-        
         this.initState();
     }
 
     @Override
     public Object clone() {
-    	
         return airship.clone();
     }
 
     @Override
     public void initState() {
-    	
-        //1 ==> MAPA COMPLETO
-        //2 ==> MAPA REDUCIDO (SI PONES ESTE TENES QUE CAMBIAR EL IF DEL GETADJACENCY)
-    	
 		airship = new HashMap<String, List<Integer>>();
 		movements = new HashMap<String, List<String>>();
-		
-        this.initAirship(1);
+        this.initAirship(3);
         
     }
 
@@ -46,7 +37,6 @@ public class AmongEnvironmentState extends EnvironmentState {
         return true;
     }
     
-	
 	public HashMap<String, List<Integer>>  getAirship() {
         return airship;
     }
@@ -67,20 +57,6 @@ public class AmongEnvironmentState extends EnvironmentState {
     public int getTotalTasks() {
     	return totalTasks;
     }
-
-    /*
-    public int getTotalTasks() {
-    	int n = 0;
-   
-    	for (Entry<String, List<Integer>> room : airship.entrySet())
-    	{
-    		n += room.getValue().get(1);
-    	}
-    	return n;
-    }
-    */
-    
-  
     
     public void setAirship(HashMap<String, List<Integer>>  airship) {
         this.airship = airship;
@@ -104,26 +80,20 @@ public class AmongEnvironmentState extends EnvironmentState {
     }
    
     public void setRoomValues(String position, List<Integer> room) {
-    		
     	airship.put(position, room);
     }
     
-    public List<Integer> getAirshipRoomValues(String room) {
-    	
+    public List<Integer> getAirshipRoomValues(String room) {	
     	return airship.get(room);
-   
    }
   
-    private void initAirship(int type)
-    {
-    	
+    private void initAirship(int type) {
     	airship = GlobalVars.airships(type);
     	movements = GlobalVars.movements(type);
     	totalCrewMembers = GlobalVars.totalCrewmembers;
     	agentPosition = GlobalVars.initialNode;
     	agentEnergy = GlobalVars.initalAmongEnergy;
     	totalTasks = GlobalVars.totalSabotageTask;
-    	
     }
     
     public HashMap<String, List<Integer>> getAdjacency(String position) {
@@ -132,16 +102,12 @@ public class AmongEnvironmentState extends EnvironmentState {
     	HashMap<String, List<Integer>> adjacentRooms = new HashMap<String, List<Integer>>();
     	adjacentRooms.put(position, airship.get(position));
     	
-    	for(String room : rooms)
-    		{
-    		if (true) // EN CASO DE LA HABITACION REDUCIDA PONER --> room == GlobalVars.ONE || room == GlobalVars.TWO || room == GlobalVars.THREE || room == GlobalVars.FOUR
-    		{
+    	for(String room : rooms) {
+    		if (true) { // EN CASO DE MAPAS REDUCIDOS PONER UNA CONDICION QUE TRAIGA LIMITADOS
     			adjacentRooms.put(room, airship.get(room));
     		}
-    		}
-    	
+    	}
     	return adjacentRooms;
-    
     }
     
     public HashMap<String, List<Integer>> getExtrasensory(){

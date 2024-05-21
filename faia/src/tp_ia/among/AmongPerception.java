@@ -17,9 +17,7 @@ public class AmongPerception extends Perception {
   
     private HashMap<String, List<Integer>> adjacencySensor;
     private HashMap<String, List<Integer>> extrasensorySensor;
-    
 
-    
     
     public AmongPerception() {
         
@@ -29,12 +27,8 @@ public class AmongPerception extends Perception {
         super(agent, environment);
     }
 
-    /**
-     * This method is used to setup the perception.
-     */
     @Override
     public void initPerception(Agent agent, Environment environment) {
-        //AmongAgent amongAgent = (AmongAgent) agent;
     	
         AmongEnvironment amongEnvironment = (AmongEnvironment) environment;
         AmongEnvironmentState environmentState = amongEnvironment.getEnvironmentState();
@@ -70,6 +64,7 @@ public class AmongPerception extends Perception {
     	Random random = new Random();
     	return random.nextInt(3) + 3;
     }
+    
     @Override
     public String toString() {
     	
@@ -102,7 +97,7 @@ public class AmongPerception extends Perception {
             }
         }
         else {
-for (Entry<String, List<Integer>> entry : adjacencySensor.entrySet()) {
+        	for (Entry<String, List<Integer>> entry : adjacencySensor.entrySet()) {
         		
         	    String key = entry.getKey();
         	    List<Integer> value = adjacencySensor.get(key);
@@ -124,10 +119,6 @@ for (Entry<String, List<Integer>> entry : adjacencySensor.entrySet()) {
             }
         }
         
-	
-    	
-    
-        return str.toString();
-        
+        return str.toString();    
 	}
 }

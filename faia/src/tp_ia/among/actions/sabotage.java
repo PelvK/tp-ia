@@ -9,14 +9,16 @@ import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
 import frsf.cidisi.faia.state.AgentState;
 import frsf.cidisi.faia.state.EnvironmentState;
 import tp_ia.among.*;
-import tp_ia.among.heuristica.GlobalVars;
+import tp_ia.among.GlobalVars.SimulationMethod;
+import ui.UpdateManager;
+import ui.UpdateStep;
 
 public class sabotage extends SearchAction {
 	
 	@Override
 	public SearchBasedAgentState execute(SearchBasedAgentState s) {
 	    AmongAgentState amongState = (AmongAgentState) s;
-
+	    amongState.incrementarCosto(this.getCost());
 	    String position = amongState.getPosition();
 	    Collection<Integer> room = amongState.getAirshipRoomValues(position);
 
@@ -43,7 +45,6 @@ public class sabotage extends SearchAction {
         AmongAgentState amongState = ((AmongAgentState) ast);
         String position = airshipState.getAgentPosition();
         Collection<Integer> room = airshipState.getAirshipRoomValues(position);
-        
         List<Integer> roomList = new ArrayList<>(room);
         
         if (roomList.get(1)  == 1 && airshipState.getAgentEnergy() > 0) {
@@ -58,8 +59,11 @@ public class sabotage extends SearchAction {
         	amongState.setEnergy(amongState.getEnergy() - 1);
         	amongState.setRemainingTasks(amongState.getRemainingTasks() - 1);
 
-        	if (GlobalVars.dinamycCrewmaters) {
+        	if (GlobalVars.dynamicCrewmates) {
 				airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airshipState.getAirship()));
+			}
+        	if(GlobalVars.withInterface) {
+				UpdateManager.getInstance().update(new UpdateStep(amongState, airshipState, "sabotage"), GlobalVars.timeStep);
 			}
             GlobalVars.extrasensoryCycle --;
 
@@ -70,7 +74,13 @@ public class sabotage extends SearchAction {
 
     @Override
     public Double getCost() {
-        return 0.0;
+    	
+    	if (GlobalVars.simulationMethod == SimulationMethod.METHOD_1){
+    		return 0.0;
+    	}
+    	else {
+    		return 4.0;
+    	}
     }
     
     @Override

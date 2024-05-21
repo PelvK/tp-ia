@@ -11,30 +11,24 @@ import frsf.cidisi.faia.environment.Environment;
 public class AmongEnvironment extends Environment {
 
     public AmongEnvironment() {
-   
         this.environmentState = new AmongEnvironmentState();
     }
 
     public AmongEnvironmentState getEnvironmentState() {
-    	
     	return (AmongEnvironmentState) super.getEnvironmentState();
     }
     
     
     @Override
     public Perception getPercept() {
-        
-    	AmongPerception perception = new AmongPerception();
     	
+    	AmongPerception perception = new AmongPerception();
     	if(GlobalVars.extrasensoryCycle == 0) {
         	perception.setExtrasensorySensor(this.getExtrasensory());
-
     	}
     	else {
         	perception.setAdjacencySensor(this.getAdjacency(this.getEnvironmentState().getAgentPosition()));
-
     	}
-    	
     	return perception;
     }
 
@@ -44,7 +38,6 @@ public class AmongEnvironment extends Environment {
     }
     
     public HashMap<String, List<Integer>> getAdjacency(String position) {
-    	
     	return ((AmongEnvironmentState) this.environmentState).getAdjacency(position);
     }
     

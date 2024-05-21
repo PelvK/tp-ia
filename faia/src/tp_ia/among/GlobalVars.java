@@ -9,6 +9,24 @@ import java.util.Map.Entry;
 
 public class GlobalVars {
 	
+	//VARIABLES PRINCIPALES PARA LA SIMULACION
+	public static SimulationMethod simulationMethod = SimulationMethod.METHOD_3;
+	public static String initialNode = randomPosition();
+    public static int totalCrewmembers = 5;
+    public static int totalSabotageTask = 3;
+    public static int initalAmongEnergy = 50;					
+    public static int extrasensoryCycle = 0;					//CUENTA CUANTO FALTA PARA LA PERCEPCION EXTRASENSORIAL
+    public static Boolean dynamicCrewmates = true;				//TRUE --> LOS TRIPULANTES SE IRAN MOVIENDO ALEATOREAMENTE DE ACUERDO AL ENUNCIADO
+	public static Boolean withInterface;
+	public static long timeStep = 2000;
+    
+    public static enum SimulationMethod {
+        METHOD_1, //-> Breath
+        METHOD_2, //-> Uniform Cost
+        METHOD_3  //-> Heuristic
+    }
+    
+    //NODOS E INTERCONEXIONES ESTATICAS
 	public static final String ONE = "Reactor(1)-----------";
     public static final String TWO = "Upper Engine(2)------";
     public static final String THREE = "Lower Engine(3)----";
@@ -23,17 +41,6 @@ public class GlobalVars {
     public static final String TWELVE = "Shields(12)-------";
     public static final String THIRTEEN = "02(13)----------";
     public static final String FOURTEEN = "Navigation(14)--";
-    
-    public static String initialNode = ONE;
-    public static int totalCrewmembers = 4;
-    public static int totalSabotageTask = 3;
-    public static int initalAmongEnergy = 50;
-    public static boolean dynamicCrewmates = false;
-
-    public static int extrasensoryCycle = 0;
-    
-    public static List<String> rooms = List.of(ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE,TEN,ELEVEN,TWELVE,THIRTEEN,FOURTEEN);
-    public static HashMap<String, Integer> cantNuevosTripulantes = new HashMap<String,Integer>();
     
     public static List<String> successorNodesONE = List.of(TWO, THREE, FOUR);
     public static List<String> successorNodesTWO = List.of(ONE, THREE, FOUR, FIVE, SEVEN);
@@ -50,29 +57,29 @@ public class GlobalVars {
     public static List<String> successorNodesTHIRTEEN = List.of(NINE, TWELVE, FOURTEEN);
     public static List<String> successorNodesFOURTEEN = List.of(NINE, THIRTEEN, TWELVE);
     
-    private static HashMap<String, List<String>> movements = movements(0);
+    public static HashMap<String, List<String>> successors(){
+    	
+    	HashMap<String, List<String>> s = new HashMap<>();
+		
+    	s.put(ONE, GlobalVars.successorNodesONE);
+    	s.put(TWO, GlobalVars.successorNodesTWO);
+    	s.put(THREE, GlobalVars.successorNodesTHREE);
+    	s.put(FOUR, GlobalVars.successorNodesFOUR);
+    	s.put(FIVE, GlobalVars.successorNodesFIVE);
+    	s.put(SIX, GlobalVars.successorNodesSIX);
+		s.put(SEVEN, GlobalVars.successorNodesSEVEN);
+		s.put(EIGHT, GlobalVars.successorNodesEIGHT);
+		s.put(NINE, GlobalVars.successorNodesNINE);
+		s.put(TEN, GlobalVars.successorNodesTEN);
+		s.put(ELEVEN, GlobalVars.successorNodesELEVEN);
+		s.put(TWELVE, GlobalVars.successorNodesTWELVE);
+		s.put(THIRTEEN, GlobalVars.successorNodesTHIRTEEN);
+		s.put(FOURTEEN, GlobalVars.successorNodesFOURTEEN);
+		
+		return s;
+    }
     
-    
-    /*
-    String[][] positions = new String[][]{
-        {ONE, TWO,THREE, FOUR},
-        {TWO, ONE, THREE, FOUR, FIVE, SEVEN},
-        {THREE, ONE, TWO, FOUR, SIX, EIGHT},
-        {FOUR, TWO, THREE},
-        {FIVE, TWO, SEVEN},
-        {SIX, THREE, EIGHT},
-        {SEVEN, TWO, NINE, FIVE},
-        {EIGHT, TEN, SIX, THREE, ELEVEN, TWELVE},
-        {NINE, SEVEN, THIRTEEN, FOURTEEN, ELEVEN},
-        {TEN, SEVEN, EIGHT},
-        {ELEVEN, EIGHT, TWELVE},
-        {TWELVE, THIRTEEN, NINE, FOURTEEN},
-        {THIRTEEN, NINE, TWELVE, FOURTEEN},
-        {FOURTEEN, NINE, THIRTEEN, TWELVE}
-    };
-    
-    */
-    
+    //TIPOS DE NAVES VACIAS (LAS USARA EL AGENTE)
     public static HashMap<String, List<Integer>> emptyAirship(Integer type){
     	
     	HashMap<String, List<Integer>> s = new HashMap<>();
@@ -142,28 +149,88 @@ public class GlobalVars {
 		return s;
     }
     
-    
-    public static HashMap<String, List<String>> successors(){
+    //TIPOS DE NAVES (LAS USARÁ EL AMBIENTE)
+    public static HashMap<String, List<Integer>> airships(int type){
     	
-    	HashMap<String, List<String>> s = new HashMap<>();
-		
-    	s.put(ONE, GlobalVars.successorNodesONE);
-    	s.put(TWO, GlobalVars.successorNodesTWO);
-    	s.put(THREE, GlobalVars.successorNodesTHREE);
-    	s.put(FOUR, GlobalVars.successorNodesFOUR);
-    	s.put(FIVE, GlobalVars.successorNodesFIVE);
-    	s.put(SIX, GlobalVars.successorNodesSIX);
-		s.put(SEVEN, GlobalVars.successorNodesSEVEN);
-		s.put(EIGHT, GlobalVars.successorNodesEIGHT);
-		s.put(NINE, GlobalVars.successorNodesNINE);
-		s.put(TEN, GlobalVars.successorNodesTEN);
-		s.put(ELEVEN, GlobalVars.successorNodesELEVEN);
-		s.put(TWELVE, GlobalVars.successorNodesTWELVE);
-		s.put(THIRTEEN, GlobalVars.successorNodesTHIRTEEN);
-		s.put(FOURTEEN, GlobalVars.successorNodesFOURTEEN);
-		
-		return s;
+    	HashMap<String, List<Integer>> airship = new HashMap<>();
+    	
+    	switch(type){
+    	
+    	case 1:
+    		
+    		airship.put(ONE, Arrays.asList(0, 1));
+			airship.put(TWO, Arrays.asList(0, 0));
+			airship.put(THREE, Arrays.asList(1, 1));
+			airship.put(FOUR, Arrays.asList(2, 0));
+			airship.put(FIVE, Arrays.asList(0, 0));
+			airship.put(SIX, Arrays.asList(0, 0));
+			airship.put(SEVEN, Arrays.asList(0, 0));
+			airship.put(EIGHT, Arrays.asList(0, 0));
+			airship.put(NINE, Arrays.asList(0, 0));
+			airship.put(TEN, Arrays.asList(1, 0));
+			airship.put(ELEVEN, Arrays.asList(0, 0));
+			airship.put(TWELVE, Arrays.asList(0, 0));
+			airship.put(THIRTEEN, Arrays.asList(0, 1));
+			airship.put(FOURTEEN, Arrays.asList(0, 0));
+			break;
+			
+    	case 2:
+    		airship.put(ONE, Arrays.asList(1, 1));
+			airship.put(TWO, Arrays.asList(0, 0));
+			airship.put(THREE, Arrays.asList(1, 1));
+			airship.put(FOUR, Arrays.asList(2, 0));
+			break;
+			
+    	case 3:
+    		
+    		airship.put(ONE, Arrays.asList(0, 0));
+			airship.put(TWO, Arrays.asList(0, 0));
+			airship.put(THREE, Arrays.asList(0, 0));
+			airship.put(FOUR, Arrays.asList(0, 0));
+			airship.put(FIVE, Arrays.asList(0, 0));
+			airship.put(SIX, Arrays.asList(0, 0));
+			airship.put(SEVEN, Arrays.asList(0, 0));
+			airship.put(EIGHT, Arrays.asList(0, 0));
+			airship.put(NINE, Arrays.asList(0, 0));
+			airship.put(TEN, Arrays.asList(0, 0));
+			airship.put(ELEVEN, Arrays.asList(0, 0));
+			airship.put(TWELVE, Arrays.asList(0, 0));
+			airship.put(THIRTEEN, Arrays.asList(0, 0));
+			airship.put(FOURTEEN, Arrays.asList(0, 0));
+			
+			List<String> randomValues = new ArrayList<>();
+			
+			while(randomValues.size() != GlobalVars.totalCrewmembers) {
+				
+				Integer aux = getRandom(0, airship.size()-1);
+				randomValues.add(GlobalVars.rooms.get(aux));
+			}
+			
+			for(String room : randomValues) { 
+				List<Integer> values = airship.get(room);
+				airship.put(room, List.of(values.get(0)+1,values.get(1)));
+	    	}
+			
+			randomValues.clear();
+			
+			while(randomValues.size() != GlobalVars.totalSabotageTask) {
+				
+				Integer aux = getRandom(0, airship.size()-1);
+				if(!randomValues.contains(GlobalVars.rooms.get(aux))) {
+					randomValues.add(GlobalVars.rooms.get(aux));
+				}
+			}
+			
+			for(String room : randomValues) { 
+				List<Integer> values = airship.get(room);
+				airship.put(room, List.of(values.get(0),1));
+	    	}
+    	}
+    	
+    	return airship;
+ 
     }
+   
     
     public static boolean AllTheWorldIsVisited() {
     	return false;
@@ -224,19 +291,24 @@ public class GlobalVars {
     }
     */
     
-public static HashMap<String, List<Integer>> updateCrewmatesPositions(HashMap<String, List<Integer>> airship) {
+    
+    public static List<String> rooms = List.of(ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE,TEN,ELEVEN,TWELVE,THIRTEEN,FOURTEEN);
+    public static HashMap<String, Integer> cantNuevosTripulantes = new HashMap<String,Integer>();
+    private static HashMap<String, List<String>> movements = movements(0);
+    
+    //FUNCION ENCARGADA DE REALIZAR LOS MOVIMIENTOS ALEATORIOS CON PROBABILIDADES
+    public static HashMap<String, List<Integer>> updateCrewmatesPositions(HashMap<String, List<Integer>> airship) {
     	
     	HashMap<String, List<Integer>> estadoNuevo = emptyAirship(4);
-		
 		reset();
 		
 		for (Entry<String, List<Integer>> entry : airship.entrySet()) {
-		
+			
 			String key = entry.getKey();			
 			List<Integer> value = airship.get(key);
 	    
 			if (value.get(0) > 0) {
-				
+			
 				List<String> connections = movements.get(key);	
 				int cantAdjacency = connections.size();			
 	    	
@@ -248,12 +320,9 @@ public static HashMap<String, List<Integer>> updateCrewmatesPositions(HashMap<St
 						
 						int roomProbability = getRandom(0, cantAdjacency-1);	
 						String selectedRoom = connections.get(roomProbability);
-						
 						cantNuevosTripulantes.put(selectedRoom, cantNuevosTripulantes.get(selectedRoom) + 1);
-    	    		
 					} 
 					else {
-						
 						cantNuevosTripulantes.put(key, cantNuevosTripulantes.get(key) + 1);
 					}
 				}
@@ -274,94 +343,7 @@ public static HashMap<String, List<Integer>> updateCrewmatesPositions(HashMap<St
     	return estadoNuevo;
     }
     
-    public static HashMap<String, List<Integer>> airships(int type){
-    	
-    	HashMap<String, List<Integer>> airship = new HashMap<>();
-    	
-    	switch(type){
-    	
-    	case 1:
-    		
-    		airship.put(ONE, Arrays.asList(0, 1));
-			airship.put(TWO, Arrays.asList(0, 0));
-			airship.put(THREE, Arrays.asList(1, 1));
-			airship.put(FOUR, Arrays.asList(2, 0));
-			airship.put(FIVE, Arrays.asList(0, 0));
-			airship.put(SIX, Arrays.asList(0, 0));
-			airship.put(SEVEN, Arrays.asList(0, 0));
-			airship.put(EIGHT, Arrays.asList(0, 0));
-			airship.put(NINE, Arrays.asList(0, 0));
-			airship.put(TEN, Arrays.asList(1, 0));
-			airship.put(ELEVEN, Arrays.asList(0, 0));
-			airship.put(TWELVE, Arrays.asList(0, 0));
-			airship.put(THIRTEEN, Arrays.asList(0, 1));
-			airship.put(FOURTEEN, Arrays.asList(0, 0));
-			break;
-			
-    	case 2:
-    		airship.put(ONE, Arrays.asList(1, 1));
-			airship.put(TWO, Arrays.asList(0, 0));
-			airship.put(THREE, Arrays.asList(1, 1));
-			airship.put(FOUR, Arrays.asList(2, 0));
-			break;
-			
-    	case 3: /* DESPUES PONER DE VUELTA ESTE */
-    		
-    		
-    		
-    		airship.put(ONE, Arrays.asList(0, 0));
-			airship.put(TWO, Arrays.asList(0, 0));
-			airship.put(THREE, Arrays.asList(0, 0));
-			airship.put(FOUR, Arrays.asList(0, 0));
-			airship.put(FIVE, Arrays.asList(0, 0));
-			airship.put(SIX, Arrays.asList(0, 0));
-			airship.put(SEVEN, Arrays.asList(0, 0));
-			airship.put(EIGHT, Arrays.asList(0, 0));
-			airship.put(NINE, Arrays.asList(0, 0));
-			airship.put(TEN, Arrays.asList(0, 0));
-			airship.put(ELEVEN, Arrays.asList(0, 0));
-			airship.put(TWELVE, Arrays.asList(0, 0));
-			airship.put(THIRTEEN, Arrays.asList(0, 0));
-			airship.put(FOURTEEN, Arrays.asList(0, 0));
-			
-			List<String> randomValues = new ArrayList<>();
-			
-			while(randomValues.size() != GlobalVars.totalCrewmembers) {
-				
-				Integer aux = getRandom(0, airship.size()-1);
-				randomValues.add(GlobalVars.rooms.get(aux));
-			}
-			
-			for(String room : randomValues) { 
-				List<Integer> values = airship.get(room);
-				airship.put(room, List.of(values.get(0)+1,values.get(1)));
-	    	}
-			
-			randomValues.clear();
-			
-			while(randomValues.size() != GlobalVars.totalSabotageTask) {
-				
-				Integer aux = getRandom(0, airship.size()-1);
-				if(!randomValues.contains(GlobalVars.rooms.get(aux))) {
-					randomValues.add(GlobalVars.rooms.get(aux));
-				}
-			}
-			
-			for(String room : randomValues) { 
-				List<Integer> values = airship.get(room);
-				airship.put(room, List.of(values.get(0),1));
-	    	}
-    	}
-    	
-    	
-    	return airship;
-    	
-    	
-    }
-    
-    
-    	public static HashMap<String, List<String>> movements(int type){
-    	
+   public static HashMap<String, List<String>> movements(int type){
     	return successors();
     	
     	//por el momento retornamos eso, pero al acortar el mapa habria que reducir caminos, por eso el type
@@ -385,29 +367,35 @@ public static HashMap<String, List<Integer>> updateCrewmatesPositions(HashMap<St
     	}
     	*/
     }
-    	
-    	private static int getRandom(int p, int t)
-        {
-        	return (int)(Math.random()*(t-p+1)+p);
-        	
+    
+   private static String randomPosition() {
+	   	List<String> rooms = List.of(ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE,TEN,ELEVEN,TWELVE,THIRTEEN,FOURTEEN);
+   		int value = getRandom(0,13);
+   		return rooms.get(value);
+   	}
+   
+   	
+    private static int getRandom(int p, int t) {
+       return (int)(Math.random()*(t-p+1)+p);	
         }
     	
+    
 
-    	private static void reset()
-    	{
-    		cantNuevosTripulantes.put(ONE, 0);
-	    	cantNuevosTripulantes.put(TWO, 0);
-	    	cantNuevosTripulantes.put(THREE, 0);
-	    	cantNuevosTripulantes.put(FOUR, 0);
-	    	cantNuevosTripulantes.put(FIVE, 0);
-	    	cantNuevosTripulantes.put(SIX, 0);
-	    	cantNuevosTripulantes.put(SEVEN, 0);
-	    	cantNuevosTripulantes.put(EIGHT, 0);
-	    	cantNuevosTripulantes.put(NINE, 0);
-	    	cantNuevosTripulantes.put(TEN, 0);
-	    	cantNuevosTripulantes.put(ELEVEN, 0);
-	    	cantNuevosTripulantes.put(TWELVE, 0);
-	    	cantNuevosTripulantes.put(THIRTEEN, 0);
-	    	cantNuevosTripulantes.put(FOURTEEN, 0);
-    	}
+    private static void reset() {
+    	
+    	cantNuevosTripulantes.put(ONE, 0);
+	    cantNuevosTripulantes.put(TWO, 0);
+	    cantNuevosTripulantes.put(THREE, 0);
+	    cantNuevosTripulantes.put(FOUR, 0);
+	    cantNuevosTripulantes.put(FIVE, 0);
+	    cantNuevosTripulantes.put(SIX, 0);
+	    cantNuevosTripulantes.put(SEVEN, 0);
+	    cantNuevosTripulantes.put(EIGHT, 0);
+	    cantNuevosTripulantes.put(NINE, 0);
+	    cantNuevosTripulantes.put(TEN, 0);
+	    cantNuevosTripulantes.put(ELEVEN, 0);
+	    cantNuevosTripulantes.put(TWELVE, 0);
+	    cantNuevosTripulantes.put(THIRTEEN, 0);
+	    cantNuevosTripulantes.put(FOURTEEN, 0);
+    }
 }

@@ -9,9 +9,12 @@ import frsf.cidisi.faia.agent.Perception;
 import frsf.cidisi.faia.agent.search.Problem;
 import frsf.cidisi.faia.agent.search.SearchAction;
 import frsf.cidisi.faia.agent.search.SearchBasedAgent;
+import frsf.cidisi.faia.solver.search.AStarSearch;
 import frsf.cidisi.faia.solver.search.BreathFirstSearch;
-import frsf.cidisi.faia.solver.search.DepthFirstSearch;
+import frsf.cidisi.faia.solver.search.IEstimatedCostFunction;
+import frsf.cidisi.faia.solver.search.IStepCostFunction;
 import frsf.cidisi.faia.solver.search.Search;
+import frsf.cidisi.faia.solver.search.UniformCostSearch;
 import tp_ia.among.actions.*;
 
 public class AmongAgent extends SearchBasedAgent {
@@ -41,7 +44,6 @@ public class AmongAgent extends SearchBasedAgent {
 		operators.addElement(new goto13());
 		operators.addElement(new goto14());
 		
-		
 		Problem problem = new Problem(goal, amongState, operators);
 		this.setProblem(problem);
 	}
@@ -49,11 +51,35 @@ public class AmongAgent extends SearchBasedAgent {
 	@Override
 	public Action selectAction(){
 
-		BreathFirstSearch strategy = new BreathFirstSearch();
-		Search searchSolver = new Search(strategy);
+		Search searchSolver;
 		
-		searchSolver.setVisibleTree(Search.EFAIA_TREE);
-		this.setSolver(searchSolver);
+		switch(GlobalVars.simulationMethod) {
+		
+			case METHOD_1:
+				BreathFirstSearch strategy_1 = new BreathFirstSearch();
+				searchSolver = new Search(strategy_1);
+				//searchSolver.setVisibleTree(Search.EFAIA_TREE);
+				this.setSolver(searchSolver);
+			break;
+			
+			case METHOD_2:
+				IStepCostFunction costo = new CostFunction();
+		        UniformCostSearch strategy_2 = new UniformCostSearch(costo);
+				searchSolver = new Search(strategy_2);
+				//searchSolver.setVisibleTree(Search.EFAIA_TREE);
+				this.setSolver(searchSolver);
+			break;
+			
+			case METHOD_3:
+				 IStepCostFunction cost = new CostFunction();
+		         IEstimatedCostFunction heuristic = new Heuristic();
+		         AStarSearch strategy_3 = new AStarSearch(cost, heuristic);
+		         searchSolver = new Search(strategy_3);
+		         //searchSolver.setVisibleTree(Search.EFAIA_TREE);
+				 this.setSolver(searchSolver);
+			break;
+				
+		}
 
 		Action selectedAction = null;
 		try{
@@ -61,7 +87,6 @@ public class AmongAgent extends SearchBasedAgent {
 		} catch (Exception ex){
 			Logger.getLogger(AmongAgent.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		
 		return selectedAction;
 	}
 

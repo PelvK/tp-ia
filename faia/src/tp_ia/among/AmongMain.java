@@ -13,7 +13,7 @@ public class AmongMain {
 		AmongAgent amongAgent = new AmongAgent();
 		AmongEnvironment amongEnvironment = new AmongEnvironment();
 		SearchBasedAgentSimulator simulator = new SearchBasedAgentSimulator(amongEnvironment, amongAgent);
-		
+		GlobalVars.withInterface = false;
 		printMemoryUsage();
 		startTime = System.currentTimeMillis();
 		simulator.start();

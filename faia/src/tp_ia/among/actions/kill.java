@@ -1,15 +1,17 @@
 package tp_ia.among.actions;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import frsf.cidisi.faia.agent.search.SearchAction;
 import frsf.cidisi.faia.agent.search.SearchBasedAgentState;
 import frsf.cidisi.faia.state.AgentState;
 import frsf.cidisi.faia.state.EnvironmentState;
 import tp_ia.among.*;
-import tp_ia.among.heuristica.GlobalVars;
+import tp_ia.among.GlobalVars.SimulationMethod;
+import ui.UpdateManager;
+import ui.UpdateStep;
 
 public class kill extends SearchAction {
 	
@@ -18,12 +20,14 @@ public class kill extends SearchAction {
 	    AmongAgentState amongState = (AmongAgentState) s;
 
 	    String position = amongState.getPosition();
+	    amongState.incrementarCosto(this.getCost());
 	    Collection<Integer> room = amongState.getAirshipRoomValues(position);
+	    
 
 	    if (room == null) return null;
 
 	    List<Integer> roomList = new ArrayList<>(room);
-
+	    
 	    if (roomList.get(0) > 0 && (amongState.getEnergy() > 0)) {
 	        amongState.setEnergy(amongState.getEnergy() - 1);
 	        roomList.set(0, roomList.get(0) - 1);
@@ -42,8 +46,7 @@ public class kill extends SearchAction {
         AmongEnvironmentState airshipState = (AmongEnvironmentState) est;
         AmongAgentState amongState = ((AmongAgentState) ast);
         String position = airshipState.getAgentPosition();
-        Collection<Integer> room = airshipState.getAirshipRoomValues(position);
-        
+        Collection<Integer> room = airshipState.getAirshipRoomValues(position);      
         List<Integer> roomList = new ArrayList<>(room);
         
         if (roomList.get(0) > 0 && airshipState.getAgentEnergy() > 0) {
@@ -58,11 +61,13 @@ public class kill extends SearchAction {
         	amongState.setEnergy(amongState.getEnergy() - 1);
         	amongState.setRemainingCrewMembers(amongState.getRemainingCrewMembers() - 1);
    
-        	if (GlobalVars.dinamycCrewmaters) {
+        	if (GlobalVars.dynamicCrewmates) {
 				airshipState.setAirship(GlobalVars.updateCrewmatesPositions(airshipState.getAirship()));
 			}
+        	if(GlobalVars.withInterface) {
+				UpdateManager.getInstance().update(new UpdateStep(amongState, airshipState, "kill"), GlobalVars.timeStep);
+			}
             GlobalVars.extrasensoryCycle --;
-
             return airshipState;
         }
         return null;
@@ -70,7 +75,13 @@ public class kill extends SearchAction {
 
     @Override
     public Double getCost() {
-        return 0.0;
+    	
+    	if (GlobalVars.simulationMethod == SimulationMethod.METHOD_1){
+    		return 0.0;
+    	}
+    	else {
+    		return 2.0;
+    	}
     }
     
     @Override
